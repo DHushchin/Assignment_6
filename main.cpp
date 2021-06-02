@@ -151,12 +151,22 @@ private:
 public:
     Vector() {}
 
+    Vector(Point a, Point b);
+
     Vector(double x, double y, double z) : x(x), y(y), z(z), length(sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2))) {}
 
     double getLength();
 
     void print();
 };
+
+Vector::Vector(Point a, Point b)
+{
+    this->x = a.getX() - b.getX();
+    this->y = a.getY() - b.getY();
+    this->z = a.getZ() - b.getZ();
+    this->length = sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
+}
 
 double Vector::getLength()
 {
@@ -190,6 +200,8 @@ public:
     Parser() {}
 
     void parse(string fileName);
+
+    vector<Point> getPoints();
 
     void print();
 };
@@ -293,6 +305,11 @@ void Parser::parse(string fileName)
     }
 }
 
+vector<Point> Parser::getPoints()
+{
+    return this->points;
+}
+
 void Parser::print()
 {
     for (int i = 0; i < this->triangles.size(); i++)
@@ -328,10 +345,106 @@ void Node::addChild(Node node)
     this->children.push_back(node);
 }
 
+class Screen
+{
+private:
+    Point base;
+    int width;
+    int height;
+    string **array;
+
+public:
+    Screen(int width, int height) : width(width), height(height), base(0, -5, 0)
+    {
+        array = new string *[height];
+
+        for (size_t i = 0; i < height; i++)
+        {
+            array[i] = new string[width];
+            for (size_t j = 0; j < width; j++)
+            {
+                array[i][j] = " ";
+            }
+        }
+    }
+
+    void addPixel(int x, int z)
+    {
+        this->array[x][z] = "*";
+    }
+
+    void print()
+    {
+        for (size_t i = 0; i < height; i++)
+        {
+            for (size_t j = 0; j < width; j++)
+            {
+                cout << array[i][j];
+            }
+            cout << endl;
+        }
+    }
+
+    Point getBase();
+};
+
+Point Screen::getBase()
+{
+    return this->base;
+}
+
+class Camera
+{
+private:
+    Point base;
+    Screen screen;
+
+public:
+    Camera() : base(Point(0, -10, 0)), screen(100, 100) {}
+
+    void photo(vector<Point> points)
+    {
+        double x1 = base.getX();
+        double y1 = base.getY();
+        double z1 = base.getZ();
+
+        double x2;
+        double y2;
+        double z2;
+
+        double t;
+
+        double x;
+        double y;
+        double z;
+
+        for (size_t i = 0; i < points.size(); i++)
+        {
+            x2 = points[i].getX();
+            y2 = points[i].getY();
+            z2 = points[i].getZ();
+
+            t = (-5 - y1) / (y2 - y1);
+
+            x = t * (x2 - x1) + x1;
+            y = t * (y2 - y1) + y1;
+            z = t * (z2 - z1) + z1;
+
+            screen.addPixel(floor(x * 5) < 0 ? 50 + abs(floor(x * 5)) : 50 - floor(x * 20), floor(z * 20) < 0 ? 50 + abs(floor(z * 20)) : 50 - floor(z * 20));
+        }
+
+        screen.print();
+    }
+};
+
 int main()
 {
     Parser parser;
     parser.parse("sphere.obj");
-    parser.print();
+
+    Camera camera;
+
+    camera.photo(parser.getPoints());
+
     return 0;
 }
