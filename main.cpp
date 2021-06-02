@@ -182,6 +182,8 @@ private:
 
     Point parsePoint(string line);
 
+    string trim(string line);
+
     Triangle parseTriangle(string line);
 
 public:
@@ -191,6 +193,24 @@ public:
 
     void print();
 };
+
+string Parser::trim(string line)
+{
+    string trimmed = line;
+    int i = 0;
+
+    while (trimmed.size() && (isspace(trimmed.front()) || trimmed.front() == '\r'))
+    {
+        trimmed.erase(trimmed.begin());
+    }
+
+    while (trimmed.size() && (isspace(trimmed.back()) || trimmed.back() == '\r'))
+    {
+        trimmed.pop_back();
+    }
+
+    return trimmed;
+}
 
 vector<string> Parser::split(string line, string separator)
 {
@@ -231,7 +251,7 @@ Point Parser::parsePoint(string line)
 
 Triangle Parser::parseTriangle(string line)
 {
-    vector<string> splittedLine = split(line, " ");
+    vector<string> splittedLine = split(trim(line), " ");
     splittedLine.erase(splittedLine.begin());
     Point vertexes[3];
 
@@ -255,17 +275,20 @@ void Parser::parse(string fileName)
 
     while (getline(file, currentLine))
     {
-        if (currentLine.find("v ") != string::npos)
+        if (currentLine != "")
         {
-            Point point = parsePoint(currentLine);
+            if (currentLine.find("v ") != string::npos)
+            {
+                Point point = parsePoint(currentLine);
 
-            this->points.push_back(point);
-        }
-        else if (currentLine.find("f ") != string::npos)
-        {
-            Triangle triangle = parseTriangle(currentLine);
+                this->points.push_back(point);
+            }
+            else if (currentLine.find("f ") != string::npos)
+            {
+                Triangle triangle = parseTriangle(currentLine);
 
-            this->triangles.push_back(triangle);
+                this->triangles.push_back(triangle);
+            }
         }
     }
 }
@@ -308,7 +331,7 @@ void Node::addChild(Node node)
 int main()
 {
     Parser parser;
-    parser.parse("cow.obj");
+    parser.parse("sphere.obj");
     parser.print();
     return 0;
 }
