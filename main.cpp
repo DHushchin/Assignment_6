@@ -2,6 +2,7 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include <cmath>
 
 using namespace std;
 
@@ -19,51 +20,30 @@ private:
     double z;
 
 public:
-    Point() : x(0), y(0), z(0) {}
+    Point() {}
 
     Point(double x, double y, double z) : x(x), y(y), z(z) {}
-
-    void setX(double x);
-
-    double getX();
-
-    void setY(double y);
-
-    double getY();
-
-    void setZ(double z);
-
-    double getZ();
 
     void print()
     {
         printf("Point: % 2.6f, % 2.6f, % 2.6f \n", this->x, this->y, this->z);
     }
-};
 
-void Point::setX(double x)
-{
-    this->x = x;
-}
+    double getX();
+
+    double getY();
+
+    double getZ();
+};
 
 double Point::getX()
 {
     return this->x;
 }
 
-void Point::setY(double y)
-{
-    this->y = y;
-}
-
 double Point::getY()
 {
     return this->y;
-}
-
-void Point::setZ(double z)
-{
-    this->z = z;
 }
 
 double Point::getZ()
@@ -77,16 +57,17 @@ private:
     Point vertexes[3];
 
 public:
+    Triangle() {}
+
     Triangle(Point a, Point b, Point c);
 
-    void print()
-    {
-        cout << "Triangle: " << endl;
-        for (size_t i = 0; i < 3; i++)
-        {
-            vertexes[i].print();
-        }
-    }
+    double getMaxX();
+
+    double getMaxY();
+
+    double getMaxZ();
+
+    void print();
 };
 
 Triangle::Triangle(Point a, Point b, Point c)
@@ -95,6 +76,101 @@ Triangle::Triangle(Point a, Point b, Point c)
     this->vertexes[1] = b;
     this->vertexes[2] = c;
 }
+
+double Triangle::getMaxX()
+{
+    double currentX;
+    double maxX = INT_MIN;
+
+    for (int i = 0; i < 3; i++)
+    {
+        currentX = vertexes[i].getX();
+
+        if (vertexes[i].getX() > maxX)
+        {
+            maxX = currentX;
+        }
+    }
+
+    return maxX;
+}
+
+double Triangle::getMaxY()
+{
+    double currentY;
+    double maxY = INT_MIN;
+
+    for (int i = 0; i < 3; i++)
+    {
+        currentY = vertexes[i].getY();
+
+        if (vertexes[i].getY() > maxY)
+        {
+            maxY = currentY;
+        }
+    }
+
+    return maxY;
+}
+
+double Triangle::getMaxZ()
+{
+    double currentZ;
+    double maxZ = INT_MIN;
+
+    for (int i = 0; i < 3; i++)
+    {
+        currentZ = vertexes[i].getZ();
+
+        if (vertexes[i].getZ() > maxZ)
+        {
+            maxZ = currentZ;
+        }
+    }
+
+    return maxZ;
+}
+
+void Triangle::print()
+{
+    cout << "Triangle: " << endl;
+    for (int i = 0; i < 3; i++)
+    {
+        vertexes[i].print();
+    }
+}
+
+class Vector : public Shape
+{
+private:
+    double x;
+    double y;
+    double z;
+    double length;
+
+public:
+    Vector() {}
+
+    Vector(double x, double y, double z) : x(x), y(y), z(z), length(sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2))) {}
+
+    double getLength();
+
+    void print();
+};
+
+double Vector::getLength()
+{
+    return this->length;
+}
+
+void Vector::print()
+{
+    printf("Point: % 2.6f, % 2.6f, % 2.6f, %2.6f\n", this->x, this->y, this->z, this->length);
+}
+
+class Box
+{
+};
 
 class Parser
 {
@@ -121,7 +197,7 @@ vector<string> Parser::split(string line, string separator)
     vector<string> tokens;
     string token;
 
-    for (size_t i = 0; i < line.length(); i++)
+    for (int i = 0; i < line.length(); i++)
     {
         if (line[i] == ' ' || i == line.length() - 1)
         {
@@ -143,7 +219,7 @@ Point Parser::parsePoint(string line)
     splittedLine.erase(splittedLine.begin());
     double coordinates[3];
 
-    for (size_t i = 0; i < splittedLine.size(); i++)
+    for (int i = 0; i < splittedLine.size(); i++)
     {
         coordinates[i] = stod(splittedLine[i]);
     }
@@ -159,7 +235,7 @@ Triangle Parser::parseTriangle(string line)
     splittedLine.erase(splittedLine.begin());
     Point vertexes[3];
 
-    for (size_t i = 0; i < splittedLine.size(); i++)
+    for (int i = 0; i < splittedLine.size(); i++)
     {
         string currentToken = splittedLine[i];
         int pointIndex = stoi(currentToken.substr(0, currentToken.find("/"))) - 1;
@@ -196,17 +272,13 @@ void Parser::parse(string fileName)
 
 void Parser::print()
 {
-    for (size_t i = 0; i < this->triangles.size(); i++)
+    for (int i = 0; i < this->triangles.size(); i++)
     {
         cout << "#" << i + 1 << endl;
         this->triangles[i].print();
         cout << endl;
     }
 }
-
-class Box
-{
-};
 
 class Node
 {
@@ -220,7 +292,7 @@ public:
 
     void addTriangle(Triangle triangle);
 
-    void addChild(Node node)
+    void addChild(Node node);
 };
 
 void Node::addTriangle(Triangle triangle)
@@ -233,15 +305,10 @@ void Node::addChild(Node node)
     this->children.push_back(node);
 }
 
-class Tree
-{
-};
-
 int main()
 {
     Parser parser;
     parser.parse("cow.obj");
     parser.print();
-
     return 0;
 }
