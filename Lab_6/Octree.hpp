@@ -11,11 +11,13 @@ private:
 public:
 	Box() {};
 	Box(Point start, Point end);
-	Box resize(Position pos);
+	Box(const Box& other);
+	void resize(Position pos);
 	void setTLF(Point point);
 	void setBRB(Point point);
 	Point getTLF();
 	Point getBRB();	
+	void setTriangle(Triangle triangle);
 };
 
 class Octree {
@@ -25,6 +27,7 @@ private:
 public:
 	Octree() {};
 	Octree(Box box);
+	void setBox(Box box);
 	void insert(Triangle triangle);
 	//Point find(Vector& ScreenRay);
 };

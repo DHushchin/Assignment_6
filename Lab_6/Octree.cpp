@@ -2,13 +2,21 @@
 
 using namespace std;
 
-Box::Box(Point start, Point end) {
+Box::Box(Point start, Point end) 
+{
 	this->top_left_front = start;
 	this->bottom_right_back = end;
     vector <Triangle> triangles;
 }
 
-Box Box::resize(Position pos) {
+Box::Box(const Box& other) {
+    this->bottom_right_back = other.bottom_right_back;
+    this->top_left_front = other.top_left_front;
+    this->triangles = other.triangles;
+}
+
+void Box::resize(Position pos) 
+{
     double midX = (top_left_front.getX() + bottom_right_back.getX()) / 2,
            midY = (top_left_front.getY() + bottom_right_back.getY()) / 2,
            midZ = (top_left_front.getZ() + bottom_right_back.getZ()) / 2;
@@ -17,63 +25,86 @@ Box Box::resize(Position pos) {
         bottom_right_back.setX(midX);
         bottom_right_back.setY(midY);
         bottom_right_back.setZ(midZ);
+        break;
     case Position::TRF:
         top_left_front.setX(midX);
         bottom_right_back.setY(midY);
         bottom_right_back.setZ(midZ);
+        break;
     case Position::BRF:
         top_left_front.setX(midX);
         top_left_front.setY(midY);
         bottom_right_back.setZ(midZ);
+        break;
     case Position::BLF:
         bottom_right_back.setX(midX);
         top_left_front.setY(midY);
         bottom_right_back.setZ(midZ);
+        break;
     case Position::TLB:
         bottom_right_back.setX(midX);
         bottom_right_back.setY(midY);
         top_left_front.setZ(midZ);
+        break;
     case Position::TRB:
         top_left_front.setX(midX);
         bottom_right_back.setY(midY);
         top_left_front.setZ(midZ);
+        break;
     case Position::BRB:
         top_left_front.setX(midX);
         top_left_front.setY(midY);
         top_left_front.setZ(midZ);
+        break;
     case Position::BLB:
         bottom_right_back.setX(midX);
         top_left_front.setY(midY);
         top_left_front.setZ(midZ);
+        break;
     }
 }
 
-void Box::setTLF(Point point) {
+void Box::setTLF(Point point) 
+{
     top_left_front = point;
 }
 
-void Box::setBRB(Point point) {
+void Box::setBRB(Point point) 
+{
     bottom_right_back = point;
 }
 
-Point Box::getTLF() {
+Point Box::getTLF() 
+{
     return top_left_front;
 }
 
-Point Box::getBRB() {
+Point Box::getBRB() 
+{
     return bottom_right_back;
 }
 
-Octree::Octree(Box box) {
+Octree::Octree(Box box) 
+{
 	this->box = box;
 	children.assign(8, nullptr);
-	for (int i = 0; i < 8; ++i)
-		children[i] = new Octree();
+    for (int i = 0; i < 8; i++) {
+        children[i] = new Octree();
+    }
 }
 
+void Octree::setBox(Box box) 
+{
+    this->box = box;
+}
 
-void Octree::insert(Triangle triangle) {
+void Box::setTriangle(Triangle triangle)
+{
+    triangles.push_back(triangle);
+}
 
+void Octree::insert(Triangle triangle) 
+{
     int midX = (box.getTLF().getX() + box.getBRB().getX()) / 2,
         midY = (box.getTLF().getY() + box.getBRB().getY()) / 2,
         midZ = (box.getTLF().getZ() + box.getBRB().getZ()) / 2;
@@ -126,11 +157,15 @@ void Octree::insert(Triangle triangle) {
     }
 
     if (points[0].getPos() == points[1].getPos() && points[1].getPos() == points[2].getPos()) {
-        children[(int)points[0].getPos()]->insert(triangle);
+        int index = (int)points[0].getPos();
+        Box newBox(box);
+        newBox.resize(points[0].getPos());
+        children[index]->setBox(newBox);
+        children[index]->insert(triangle);
     }
-
-    else {
-        
+    else if (!triangle.getInsert()) {
+        box.setTriangle(triangle);
+        triangle.setInsert();
     }
 
 }

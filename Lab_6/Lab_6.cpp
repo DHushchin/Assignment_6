@@ -10,6 +10,6 @@ int main()
     cout << "Min "; parser.findMinPoint().print();
     cout << "Max "; parser.findMaxPoint().print();
     Box box(parser.findMinPoint(), parser.findMaxPoint());
-    //Octree* root = new Octree(box);
+    Octree* root = new Octree(box);
     return 0;
 }
