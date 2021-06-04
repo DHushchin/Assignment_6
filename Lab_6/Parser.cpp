@@ -2,106 +2,6 @@
 
 using namespace std;
 
-double Point::getX()
-{
-    return this->x;
-}
-
-double Point::getY()
-{
-    return this->y;
-}
-
-double Point::getZ()
-{
-    return this->z;
-}
-
-void Point::print()
-{
-    printf("Point: % 2.6f, % 2.6f, % 2.6f \n", this->x, this->y, this->z);
-}
-
-Triangle::Triangle(Point a, Point b, Point c)
-{
-    this->vertexes[0] = a;
-    this->vertexes[1] = b;
-    this->vertexes[2] = c;
-}
-
-double Triangle::getMaxX()
-{
-    double currentX;
-    double maxX = INT_MIN;
-
-    for (int i = 0; i < 3; i++)
-    {
-        currentX = vertexes[i].getX();
-
-        if (vertexes[i].getX() > maxX)
-        {
-            maxX = currentX;
-        }
-    }
-
-    return maxX;
-}
-
-double Triangle::getMaxY()
-{
-    double currentY;
-    double maxY = INT_MIN;
-
-    for (int i = 0; i < 3; i++)
-    {
-        currentY = vertexes[i].getY();
-
-        if (vertexes[i].getY() > maxY)
-        {
-            maxY = currentY;
-        }
-    }
-
-    return maxY;
-}
-
-double Triangle::getMaxZ()
-{
-    double currentZ;
-    double maxZ = INT_MIN;
-
-    for (int i = 0; i < 3; i++)
-    {
-        currentZ = vertexes[i].getZ();
-
-        if (vertexes[i].getZ() > maxZ)
-        {
-            maxZ = currentZ;
-        }
-    }
-
-    return maxZ;
-}
-
-void Triangle::print()
-{
-    cout << "Triangle: " << endl;
-    for (int i = 0; i < 3; i++)
-    {
-        vertexes[i].print();
-    }
-}
-
-double Vector::getLength()
-{
-    return this->length;
-}
-
-void Vector::print()
-{
-    printf("Point: % 2.6f, % 2.6f, % 2.6f, %2.6f\n", this->x, this->y, this->z, this->length);
-}
-
 
 string Parser::trim(string line)
 {
@@ -210,4 +110,39 @@ void Parser::print()
         this->triangles[i].print();
         cout << endl;
     }
+}
+
+Point Parser::findMinPoint() {
+    Point Min(0, 0, 0);
+    for (int i = 0; i < this->triangles.size(); i++)
+    {
+        double MinX = this->triangles[i].getMinX();
+        double MinY = this->triangles[i].getMinY();
+        double MinZ = this->triangles[i].getMinZ();
+        if (Min.getX() > MinX)
+            Min.setX(MinX);
+        if (Min.getY() > MinY)
+            Min.setY(MinY);
+        if (Min.getZ() > MinZ)
+            Min.setZ(MinZ);
+    }
+    return Min;
+}
+
+
+Point Parser::findMaxPoint() {
+    Point Max(0, 0, 0);
+    for (int i = 0; i < this->triangles.size(); i++)
+    {
+        double MaxX = this->triangles[i].getMaxX();
+        double MaxY = this->triangles[i].getMaxY();
+        double MaxZ = this->triangles[i].getMaxZ();
+        if (Max.getX() < MaxX)
+            Max.setX(MaxX);
+        if (Max.getY() < MaxY)
+            Max.setY(MaxY);
+        if (Max.getZ() < MaxZ)
+            Max.setZ(MaxZ);
+    }
+    return Max;
 }
