@@ -1,7 +1,68 @@
 #include "Camera.h"
 
-Camera::Camera() : Point(0, -50, 0), screen(1000, 1000) {}
-
-void Camera::photo(vector<Triangle> triangles)
+Camera::Camera() : base(0, -20, 0)
 {
+    Point screenBase(this->base.getX(), this->base.getY() + 5, this->base.getZ());
+    Plane screenImage(0, 1, 0, this->base.getY() + 5);
+    this->screen = Screen(screenBase, screenImage, 2, 2);
+
+    Point lightBase(this->base.getX(), this->base.getY(), this->base.getZ() + 10);
+    this->light = Light(lightBase);
+}
+
+void Camera::photo()
+{
+    Point screenBase = this->screen.getBase();
+    Point currentPoint;
+
+    vector<Line> cameraLines;
+    vector<Line> lightLines;
+
+    double x;
+    double y;
+    double z;
+
+    int screenWidth = screen.getWidth();
+    int screenHeight = screen.getHeight();
+
+    for (int i = screenBase.getZ() + screenHeight / 2; i >= screenBase.getZ() - screenHeight / 2; i--)
+    {
+        for (int j = screenBase.getX() - screenWidth / 2; j <= screenBase.getX() + screenWidth / 2; j++)
+        {
+            currentPoint = Point(j, screenBase.getY(), i);
+            cameraLines.push_back(Line(this->base, currentPoint));
+            lightLines.push_back(Line(this->light.getBase(), currentPoint));
+        }
+    }
+
+    cout << "Rays lines:" << endl;
+    for (int i = 0; i < cameraLines.size(); i++)
+    {
+        cout << "#" << i + 1 << endl;
+        cameraLines[i].print();
+        lightLines[i].print();
+        cout << "Angle: " << angleBetween(cameraLines[i].getDirectionVector(), lightLines[i].getDirectionVector()) << "°" << endl;
+        cout << endl;
+    }
+    cout << endl;
+
+    cout << "Screen plane:" << endl;
+    this->screen.getImage().print();
+    cout << endl
+         << endl;
+
+    cout << "Screen base:" << endl;
+    this->screen.getBase().print();
+    cout << endl
+         << endl;
+
+    cout << "Camera base:" << endl;
+    this->base.print();
+    cout << endl
+         << endl;
+
+    cout << "Light base:" << endl;
+    this->light.getBase().print();
+    cout << endl
+         << endl;
 }

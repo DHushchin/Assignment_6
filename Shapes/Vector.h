@@ -23,7 +23,17 @@ public:
 
     Vector(double x, double y, double z);
 
+    double getX();
+
+    double getY();
+
+    double getZ();
+
     double getLength();
 
     void print();
 };
+
+double scalarProduct(Vector a, Vector b);
+
+double angleBetween(Vector a, Vector b);

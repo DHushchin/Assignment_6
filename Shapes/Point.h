@@ -14,15 +14,17 @@ private:
     double z;
 
 public:
-    Point() {}
+    Point();
+
+    Point(const Point &point);
 
     Point(double x, double y, double z);
 
     void print();
 
-    double getX();
+    double getX() const;
 
-    double getY();
+    double getY() const;
 
-    double getZ();
+    double getZ() const;
 };

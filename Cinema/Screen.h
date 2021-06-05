@@ -7,24 +7,27 @@
 
 using namespace std;
 
-class Screen : Plane
+class Screen
 {
 private:
     Point base;
+    Plane image;
 
     int width;
     int height;
 
-    string **array;
-
 public:
-    Screen(int width, int height);
+    Screen();
+
+    Screen(const Point &base, const Plane &image, int width, int height);
 
     void addPixel(int x, int y);
 
     void print();
 
     Point getBase();
+
+    Plane getImage();
 
     int getWidth();
 

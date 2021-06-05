@@ -6,7 +6,7 @@
 
 using namespace std;
 
-class Plane
+class Plane : public Shape
 {
 private:
     double A;
@@ -15,15 +15,19 @@ private:
     double D;
 
 public:
+    Plane();
+
     Plane(double A, double B, double C, double D);
 
+    Plane(const Plane &plane);
+
+    double getA() const;
+
+    double getB() const;
+
+    double getC() const;
+
+    double getD() const;
+
     void print();
-
-    double getA();
-
-    double getB();
-
-    double getC();
-
-    double getD();
 };
