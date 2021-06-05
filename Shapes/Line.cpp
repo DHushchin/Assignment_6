@@ -42,10 +42,10 @@ void Line::print()
 {
     if (this->directionVector.getX() == 0 || this->directionVector.getY() == 0 || this->directionVector.getZ() == 0)
     {
-        printf("Line: x = %1.2ft + %1.2f, y = %1.2ft + %1.2f, z = %1.2ft + %1.2f \n", this->directionVector.getX(), this->firstPoint.getX(), this->directionVector.getY(), this->firstPoint.getY(), this->directionVector.getZ(), this->firstPoint.getZ());
+        printf("Line: x = %1.3ft + %1.3f, y = %1.3ft + %1.3f, z = %1.3ft + %1.3f \n", this->directionVector.getX(), this->firstPoint.getX(), this->directionVector.getY(), this->firstPoint.getY(), this->directionVector.getZ(), this->firstPoint.getZ());
     }
     else
     {
-        printf("Line: (x - %1.2f) / %1.2f = (y - %1.2f) / %1.2f = (z - %1.2f) / %1.2f \n", this->firstPoint.getX(), this->directionVector.getX(), this->firstPoint.getY(), this->directionVector.getY(), this->firstPoint.getZ(), this->directionVector.getZ());
+        printf("Line: (x - %1.3f) / %1.3f = (y - %1.3f) / %1.3f = (z - %1.3f) / %1.3f \n", this->firstPoint.getX(), this->directionVector.getX(), this->firstPoint.getY(), this->directionVector.getY(), this->firstPoint.getZ(), this->directionVector.getZ());
     }
 }

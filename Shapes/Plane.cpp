@@ -14,7 +14,7 @@ Plane::Plane(const Plane &plane)
 
 void Plane::print()
 {
-    printf("Plane: %1.2fx + %1.2fy + %1.2fz + %1.2f = 0 \n", this->A, this->B, this->C, this->D);
+    printf("Plane: %1.3fx + %1.3fy + %1.3fz + %1.3f = 0 \n", this->A, this->B, this->C, this->D);
 }
 
 double Plane::getA() const
