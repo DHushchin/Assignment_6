@@ -49,6 +49,40 @@ public:
 };
 
 
+class Vector : public Shape
+{
+private:
+    double x;
+    double y;
+    double z;
+    double length;
+
+public:
+public:
+    Vector() {};
+    Vector(Point a, Point b);
+    Vector(double x, double y, double z);
+    double getX();
+    double getY();
+    double getZ();
+    double getLength();
+    void print();
+};
+
+class Line : public Shape
+{
+private:
+    Point firstPoint;
+    Point secondPoint;
+    Vector directionVector;
+
+public:
+    Line(Point firstPoint, Point secondPoint);
+    Vector getDirectionVector();
+    bool contains(Point point);
+    void print();
+};
+
 class Triangle : public Shape
 {
 private:
@@ -67,22 +101,6 @@ public:
     double getMinY();
     double getMinZ();
     void print();
+    bool LineIntersect(Line& line);
 };
-
-
-class Vector : public Shape
-{
-private:
-    double x;
-    double y;
-    double z;
-    double length;
-
-public:
-    Vector() {}
-    Vector(double x, double y, double z) : x(x), y(y), z(z), length(sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2))) {}
-    double getLength();
-    void print();
-};
-
 

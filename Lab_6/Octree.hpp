@@ -18,6 +18,8 @@ public:
 	Point getTLF();
 	Point getBRB();	
 	void setTriangle(Triangle triangle);
+	vector<Triangle> getTriangles();
+	bool LineIntersect(Line& line);
 };
 
 class Octree {
@@ -29,5 +31,5 @@ public:
 	Octree(Box box);
 	void setBox(Box box);
 	void insert(Triangle triangle);
-	//Point find(Vector& ScreenRay);
+	void findIntersectedTriangles(Line& line, vector<Triangle>& intersected);
 };

@@ -84,6 +84,19 @@ Point Box::getBRB()
     return bottom_right_back;
 }
 
+void Box::setTriangle(Triangle triangle)
+{
+    triangles.push_back(triangle);
+}
+
+vector<Triangle> Box::getTriangles() {
+    return triangles;
+}
+
+bool Box::LineIntersect(Line& line) {
+    return true;
+}
+
 Octree::Octree(Box box) 
 {
 	this->box = box;
@@ -98,10 +111,6 @@ void Octree::setBox(Box box)
     this->box = box;
 }
 
-void Box::setTriangle(Triangle triangle)
-{
-    triangles.push_back(triangle);
-}
 
 void Octree::insert(Triangle triangle) 
 {
@@ -168,4 +177,25 @@ void Octree::insert(Triangle triangle)
         triangle.setInsert();
     }
 
+}
+
+
+void Octree::findIntersectedTriangles(Line& line, vector<Triangle>& IntersectedTriangles) 
+{
+    if (children.size() > 0) {
+        for (int i = 0; i < children.size(); i++) {
+            if (children[i]->box.LineIntersect(line)) {
+                findIntersectedTriangles(line, IntersectedTriangles);
+            }
+            else 
+            {
+                vector <Triangle> triangles = children[i]->box.getTriangles();
+                for (size_t i = 0; i < triangles.size(); i++) {
+                    if (triangles[i].LineIntersect(line)) {
+                        IntersectedTriangles.push_back(triangles[i]);
+                    }
+                }
+            }
+        }
+    }
 }
