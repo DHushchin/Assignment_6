@@ -13,6 +13,8 @@ private:
     Point base;
     Plane image;
 
+    int size;
+
     int width;
     int height;
 
@@ -32,4 +34,6 @@ public:
     int getWidth();
 
     int getHeight();
+
+    int getSize();
 };

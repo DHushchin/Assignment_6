@@ -3,8 +3,8 @@
 Camera::Camera() : base(0, -20, 0)
 {
     Point screenBase(this->base.getX(), this->base.getY() + 5, this->base.getZ());
-    Plane screenImage(0, 1, 0, this->base.getY() + 5);
-    this->screen = Screen(screenBase, screenImage, 2, 2);
+    Plane screenImage(0, 1, 0, -this->base.getY() - 5);
+    this->screen = Screen(screenBase, screenImage, 10, 10);
 
     Point lightBase(this->base.getX(), this->base.getY(), this->base.getZ() + 10);
     this->light = Light(lightBase);
@@ -24,10 +24,11 @@ void Camera::photo()
 
     int screenWidth = screen.getWidth();
     int screenHeight = screen.getHeight();
+    int screenSize = screen.getSize();
 
-    for (int i = screenBase.getZ() + screenHeight / 2; i >= screenBase.getZ() - screenHeight / 2; i--)
+    for (double i = screenBase.getZ() + screenSize / 2; i >= screenBase.getZ() - screenSize / 2; i -= screenSize / (double)screenHeight)
     {
-        for (int j = screenBase.getX() - screenWidth / 2; j <= screenBase.getX() + screenWidth / 2; j++)
+        for (double j = screenBase.getX() - screenSize / 2; j <= screenBase.getX() + screenSize / 2; j += screenSize / (double)screenWidth)
         {
             currentPoint = Point(j, screenBase.getY(), i);
             cameraLines.push_back(Line(this->base, currentPoint));
