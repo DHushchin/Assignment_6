@@ -49,3 +49,13 @@ void Line::print()
         printf("Line: (x - %1.3f) / %1.3f = (y - %1.3f) / %1.3f = (z - %1.3f) / %1.3f \n", this->firstPoint.getX(), this->directionVector.getX(), this->firstPoint.getY(), this->directionVector.getY(), this->firstPoint.getZ(), this->directionVector.getZ());
     }
 }
+
+Point Line::getFirstPoint()
+{
+    return this->firstPoint;
+}
+
+Point Line::getSecondPoint()
+{
+    return this->secondPoint;
+}

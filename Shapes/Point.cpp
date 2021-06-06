@@ -32,3 +32,28 @@ double Point::getZ() const
 {
     return this->z;
 }
+
+void Point::setX(double x)
+{
+    this->x = x;
+}
+
+void Point::setY(double y)
+{
+    this->y = y;
+}
+
+void Point::setZ(double z)
+{
+    this->z = z;
+}
+
+void Point::setPosition(Position position)
+{
+    this->position = position;
+}
+
+Position Point::getPosition()
+{
+    return position;
+}

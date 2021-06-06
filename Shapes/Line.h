@@ -23,5 +23,9 @@ public:
 
     bool contains(Point point);
 
+    Point getFirstPoint();
+
+    Point getSecondPoint();
+
     void print();
 };

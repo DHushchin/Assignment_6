@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <string>
+#include <fstream>
 #include <iostream>
 
 #include "../Shapes/Point.h"
@@ -29,6 +30,12 @@ public:
     void parse(string fileName);
 
     vector<Point> getPoints();
+
+    vector<Triangle> getTriangles();
+
+    Point findMaxPoint();
+
+    Point findMinPoint();
 
     void print();
 };

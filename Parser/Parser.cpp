@@ -113,3 +113,39 @@ void Parser::print()
         cout << endl;
     }
 }
+
+Point Parser::findMinPoint()
+{
+    Point Min(0, 0, 0);
+    for (int i = 0; i < this->triangles.size(); i++)
+    {
+        double MinX = this->triangles[i].getMinX();
+        double MinY = this->triangles[i].getMinY();
+        double MinZ = this->triangles[i].getMinZ();
+        if (Min.getX() > MinX)
+            Min.setX(MinX);
+        if (Min.getY() > MinY)
+            Min.setY(MinY);
+        if (Min.getZ() > MinZ)
+            Min.setZ(MinZ);
+    }
+    return Min;
+}
+
+Point Parser::findMaxPoint()
+{
+    Point Max(0, 0, 0);
+    for (int i = 0; i < this->triangles.size(); i++)
+    {
+        double MaxX = this->triangles[i].getMaxX();
+        double MaxY = this->triangles[i].getMaxY();
+        double MaxZ = this->triangles[i].getMaxZ();
+        if (Max.getX() < MaxX)
+            Max.setX(MaxX);
+        if (Max.getY() < MaxY)
+            Max.setY(MaxY);
+        if (Max.getZ() < MaxZ)
+            Max.setZ(MaxZ);
+    }
+    return Max;
+}

@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "Shape.h"
+#include "Position.h"
 
 using namespace std;
 
@@ -12,6 +13,7 @@ private:
     double x;
     double y;
     double z;
+    Position position;
 
 public:
     Point();
@@ -27,4 +29,14 @@ public:
     double getY() const;
 
     double getZ() const;
+
+    void setX(double x);
+
+    void setY(double y);
+
+    void setZ(double z);
+
+    void setPosition(Position position);
+
+    Position getPosition();
 };
