@@ -1,9 +1,13 @@
 #include "Octree.h"
 
+Octree::Octree() {}
+
 Octree::Octree(Box box)
 {
     this->box = box;
+
     children.assign(8, nullptr);
+
     for (int i = 0; i < 8; i++)
     {
         children[i] = new Octree();
@@ -22,20 +26,23 @@ void Octree::insert(Triangle triangle)
         midZ = (box.getTLF().getZ() + box.getBRB().getZ()) / 2;
 
     vector<Point> points = triangle.getPoints();
+
     for (int i = 0; i < 3; i++)
     {
-        double x = points[i].getX();
-        double y = points[i].getY();
-        double z = points[i].getZ();
+        double x = points[i].getX(),
+               y = points[i].getY(),
+               z = points[i].getZ();
 
         try
         {
             if (x < box.getTLF().getX() || x > box.getBRB().getX() || y < box.getTLF().getY() || y > box.getBRB().getY() || z < box.getTLF().getZ() || z > box.getBRB().getZ())
+            {
                 throw "Point out of range";
+            }
         }
         catch (const char *exception)
         {
-            std::cerr << "Error: " << exception << '\n';
+            cerr << "Error: " << exception << '\n';
         }
 
         if (x <= midX)
@@ -43,16 +50,24 @@ void Octree::insert(Triangle triangle)
             if (y <= midY)
             {
                 if (z <= midZ)
+                {
                     points[i].setPosition(Position::TLF);
+                }
                 else
+                {
                     points[i].setPosition(Position::TLB);
+                }
             }
             else
             {
                 if (z <= midZ)
+                {
                     points[i].setPosition(Position::BLF);
+                }
                 else
+                {
                     points[i].setPosition(Position::BLB);
+                }
             }
         }
         else
@@ -60,16 +75,24 @@ void Octree::insert(Triangle triangle)
             if (y <= midY)
             {
                 if (z <= midZ)
+                {
                     points[i].setPosition(Position::TRF);
+                }
                 else
+                {
                     points[i].setPosition(Position::TRB);
+                }
             }
             else
             {
                 if (z <= midZ)
+                {
                     points[i].setPosition(Position::BRF);
+                }
                 else
+                {
                     points[i].setPosition(Position::BRB);
+                }
             }
         }
     }
@@ -78,6 +101,7 @@ void Octree::insert(Triangle triangle)
     {
         int index = (int)points[0].getPosition();
         Box newBox(box);
+
         newBox.resize(points[0].getPosition());
         children[index]->setBox(newBox);
         children[index]->insert(triangle);
@@ -102,7 +126,8 @@ void Octree::findIntersectedTriangles(Line &line, vector<Triangle> &IntersectedT
             else
             {
                 vector<Triangle> triangles = children[i]->box.getTriangles();
-                for (size_t i = 0; i < triangles.size(); i++)
+
+                for (int i = 0; i < triangles.size(); i++)
                 {
                     if (triangles[i].lineIntersect(line))
                     {

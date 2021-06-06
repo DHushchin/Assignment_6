@@ -3,8 +3,8 @@
 #include <iostream>
 #include <cmath>
 
-#include "Shape.h"
-#include "Point.h"
+#include "../Shape/Shape.h"
+#include "../Point/Point.h"
 
 using namespace std;
 

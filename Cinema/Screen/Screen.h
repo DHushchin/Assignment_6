@@ -2,8 +2,8 @@
 
 #include <string>
 
-#include "../Shapes/Point.h"
-#include "../Shapes/Plane.h"
+#include "../../Shapes/Point/Point.h"
+#include "../../Shapes/Plane/Plane.h"
 
 using namespace std;
 
@@ -12,9 +12,7 @@ class Screen
 private:
     Point base;
     Plane image;
-
     int size;
-
     int width;
     int height;
 

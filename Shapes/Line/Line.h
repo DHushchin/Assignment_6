@@ -3,9 +3,9 @@
 #include <string>
 #include <iostream>
 
-#include "Shape.h"
-#include "Point.h"
-#include "Vector.h"
+#include "../Shape/Shape.h"
+#include "../Point/Point.h"
+#include "../Vector/Vector.h"
 
 using namespace std;
 

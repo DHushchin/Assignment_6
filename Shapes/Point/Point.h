@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-#include "Shape.h"
-#include "Position.h"
+#include "../Shape/Shape.h"
+#include "../Position/Position.h"
 
 using namespace std;
 

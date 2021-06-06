@@ -2,8 +2,8 @@
 
 #include <vector>
 
-#include "Triangle.h"
-#include "Point.h"
+#include "../Triangle/Triangle.h"
+#include "../Point/Point.h"
 
 using namespace std;
 
@@ -14,15 +14,25 @@ private:
     vector<Triangle> triangles;
 
 public:
-    Box(){};
-    Box(Point start, Point end);
-    Box(const Box &other);
-    void resize(Position pos);
+    Box();
+
+    Box(Point startPoint, Point endPoint);
+
+    Box(const Box &box);
+
+    void resize(Position position);
+
     void setTLF(Point point);
+
     void setBRB(Point point);
+
     Point getTLF();
+
     Point getBRB();
+
     void setTriangle(Triangle triangle);
+
     vector<Triangle> getTriangles();
+
     bool lineIntersect(Line &line);
 };

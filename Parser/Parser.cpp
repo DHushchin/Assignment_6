@@ -116,36 +116,58 @@ void Parser::print()
 
 Point Parser::findMinPoint()
 {
-    Point Min(0, 0, 0);
+    Point min(0, 0, 0);
+
     for (int i = 0; i < this->triangles.size(); i++)
     {
-        double MinX = this->triangles[i].getMinX();
-        double MinY = this->triangles[i].getMinY();
-        double MinZ = this->triangles[i].getMinZ();
-        if (Min.getX() > MinX)
-            Min.setX(MinX);
-        if (Min.getY() > MinY)
-            Min.setY(MinY);
-        if (Min.getZ() > MinZ)
-            Min.setZ(MinZ);
+        double minX = this->triangles[i].getMinX(),
+               minY = this->triangles[i].getMinY(),
+               minZ = this->triangles[i].getMinZ();
+
+        if (min.getX() > minX)
+        {
+            min.setX(minX);
+        }
+
+        if (min.getY() > minY)
+        {
+            min.setY(minY);
+        }
+
+        if (min.getZ() > minZ)
+        {
+            min.setZ(minZ);
+        }
     }
-    return Min;
+
+    return min;
 }
 
 Point Parser::findMaxPoint()
 {
-    Point Max(0, 0, 0);
+    Point max(0, 0, 0);
+
     for (int i = 0; i < this->triangles.size(); i++)
     {
-        double MaxX = this->triangles[i].getMaxX();
-        double MaxY = this->triangles[i].getMaxY();
-        double MaxZ = this->triangles[i].getMaxZ();
-        if (Max.getX() < MaxX)
-            Max.setX(MaxX);
-        if (Max.getY() < MaxY)
-            Max.setY(MaxY);
-        if (Max.getZ() < MaxZ)
-            Max.setZ(MaxZ);
+        double maxX = this->triangles[i].getMaxX(),
+               maxY = this->triangles[i].getMaxY(),
+               maxZ = this->triangles[i].getMaxZ();
+
+        if (max.getX() < maxX)
+        {
+            max.setX(maxX);
+        }
+
+        if (max.getY() < maxY)
+        {
+            max.setY(maxY);
+        }
+
+        if (max.getZ() < maxZ)
+        {
+            max.setZ(maxZ);
+        }
     }
-    return Max;
+
+    return max;
 }

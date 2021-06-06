@@ -2,11 +2,11 @@
 
 #include <vector>
 
-#include "Screen.h"
-#include "Light.h"
-#include "../Shapes/Triangle.h"
-#include "../Shapes/Vector.h"
-#include "../Shapes/Line.h"
+#include "../Screen/Screen.h"
+#include "../Light/Light.h"
+#include "../../Shapes/Triangle/Triangle.h"
+#include "../../Shapes/Vector/Vector.h"
+#include "../../Shapes/Line/Line.h"
 
 using namespace std;
 

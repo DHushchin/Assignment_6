@@ -2,8 +2,8 @@
 
 #include <vector>
 
-#include "../Shapes/Point.h"
-#include "../Shapes/Plane.h"
+#include "../../Shapes/Point/Point.h"
+#include "../../Shapes/Plane/Plane.h"
 
 using namespace std;
 

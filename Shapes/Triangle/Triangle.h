@@ -3,10 +3,11 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <climits>
 
-#include "Shape.h"
-#include "Point.h"
-#include "Line.h"
+#include "../Shape/Shape.h"
+#include "../Point/Point.h"
+#include "../Line/Line.h"
 
 using namespace std;
 

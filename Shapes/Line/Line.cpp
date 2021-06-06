@@ -2,9 +2,9 @@
 
 Line::Line(Point firstPoint, Point secondPoint) : firstPoint(firstPoint), secondPoint(secondPoint)
 {
-    double x = this->secondPoint.getX() - this->firstPoint.getX();
-    double y = this->secondPoint.getY() - this->firstPoint.getY();
-    double z = this->secondPoint.getZ() - this->firstPoint.getZ();
+    double x = this->secondPoint.getX() - this->firstPoint.getX(),
+           y = this->secondPoint.getY() - this->firstPoint.getY(),
+           z = this->secondPoint.getZ() - this->firstPoint.getZ();
 
     this->directionVector = Vector(x, y, z);
 }
@@ -16,9 +16,9 @@ Vector Line::getDirectionVector()
 
 bool Line::contains(Point point)
 {
-    double x = point.getX();
-    double y = point.getY();
-    double z = point.getZ();
+    double x = point.getX(),
+           y = point.getY(),
+           z = point.getZ();
 
     if (((x - this->firstPoint.getX()) / (this->directionVector.getX())) != ((y - this->firstPoint.getY()) / (this->directionVector.getY())))
     {

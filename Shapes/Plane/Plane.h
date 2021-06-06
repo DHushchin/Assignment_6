@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "Shape.h"
+#include "../Shape/Shape.h"
 
 using namespace std;
 

@@ -10,8 +10,8 @@ Triangle::Triangle(Point a, Point b, Point c)
 
 double Triangle::getMaxX()
 {
-    double currentX;
-    double maxX = INT_MIN;
+    double currentX,
+        maxX = INT_MIN;
 
     for (int i = 0; i < 3; i++)
     {
@@ -28,8 +28,8 @@ double Triangle::getMaxX()
 
 double Triangle::getMaxY()
 {
-    double currentY;
-    double maxY = INT_MIN;
+    double currentY,
+        maxY = INT_MIN;
 
     for (int i = 0; i < 3; i++)
     {
@@ -46,8 +46,8 @@ double Triangle::getMaxY()
 
 double Triangle::getMaxZ()
 {
-    double currentZ;
-    double maxZ = INT_MIN;
+    double currentZ,
+        maxZ = INT_MIN;
 
     for (int i = 0; i < 3; i++)
     {
@@ -95,8 +95,8 @@ vector<Point> Triangle::getPoints()
 
 double Triangle::getMinX()
 {
-    double currentX;
-    double minX = INT_MAX;
+    double currentX,
+        minX = INT_MAX;
 
     for (int i = 0; i < 3; i++)
     {
@@ -113,8 +113,8 @@ double Triangle::getMinX()
 
 double Triangle::getMinY()
 {
-    double currentY;
-    double minY = INT_MAX;
+    double currentY,
+        minY = INT_MAX;
 
     for (int i = 0; i < 3; i++)
     {
@@ -131,8 +131,8 @@ double Triangle::getMinY()
 
 double Triangle::getMinZ()
 {
-    double currentZ;
-    double minZ = INT_MAX;
+    double currentZ,
+        minZ = INT_MAX;
 
     for (int i = 0; i < 3; i++)
     {
@@ -225,10 +225,12 @@ bool Triangle::lineIntersect(Line &line)
 
     double total;
 
-    total = (acos(a1) + acos(a2) + acos(a3)) * (180 / 3.14159265);
+    total = (acos(a1) + acos(a2) + acos(a3)) * (180 / M_PI);
 
     if (abs(total - 360) > 1e-3)
+    {
         return false;
+    }
 
     return true;
 }
