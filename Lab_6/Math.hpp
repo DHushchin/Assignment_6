@@ -73,12 +73,14 @@ class Line : public Shape
 {
 private:
     Vector directionVector;
-
-public:
-	/**/
 	Point firstPoint;
 	Point secondPoint;
+public:
 	/**/
+
+	/**/
+	Point getFisrt();
+	Point getSecond();
     Line(Point firstPoint, Point secondPoint);
     Vector getDirectionVector();
     bool contains(Point point);

@@ -208,15 +208,16 @@ bool Triangle::LineIntersect(Line& line)
 
 	double tmp1;
 
-	tmp1 = nX * (line.secondPoint.getX() - line.firstPoint.getX()) + nY * (line.secondPoint.getY() - line.firstPoint.getY()) + nZ * (line.secondPoint.getZ() - line.firstPoint.getZ());
+	tmp1 = nX * (line.getSecond().getX() - line.getFisrt().getX()) + nY * (line.getSecond().getY() - line.getSecond().getY()) + nZ * (line.getSecond().getZ() - line.getFisrt().getZ());
 	if (abs(tmp1) < 1e-3)
 		return false;
 
 	double tmp2;
 
-	tmp2 = -(d + nX * line.firstPoint.getX() + nY * line.firstPoint.getY() + nZ * line.firstPoint.getZ());
+	tmp2 = -(d + nX * line.getFisrt().getX() + nY * line.getFisrt().getY() + nZ * line.getFisrt().getZ());
 
-	Point * intersectPoint = new Point(line.firstPoint.getX() + tmp2 * (line.secondPoint.getX() - line.firstPoint.getX()), line.firstPoint.getY() + tmp2 * (line.secondPoint.getY() - line.firstPoint.getY()), line.firstPoint.getZ() + tmp2 * (line.secondPoint.getZ() - line.firstPoint.getZ()));
+	/*intersectPoint - точка пересечения*/
+	Point * intersectPoint = new Point(line.getFisrt().getX() + tmp2 * (line.getSecond().getX() - line.getFisrt().getX()), line.getFisrt().getY() + tmp2 * (line.getSecond().getY() - line.getFisrt().getY()), line.getFisrt().getZ() + tmp2 * (line.getSecond().getZ() - line.getFisrt().getZ()));
 
 	if (tmp2 < 0 || tmp2 > 1)
 		return false;
@@ -282,6 +283,14 @@ Vector::Vector(Point a, Point b)
     this->y = a.getY() - b.getY();
     this->z = a.getZ() - b.getZ();
     this->length = sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
+}
+
+Point Line::getFisrt() {
+	return firstPoint;
+}
+
+Point Line::getSecond() {
+	return secondPoint;
 }
 
 double Vector::getX()
