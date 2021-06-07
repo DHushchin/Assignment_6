@@ -139,7 +139,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Cinema\Camera\Camera.cpp" />
+    <ClCompile Include="Cinema\Light\Light.cpp" />
+    <ClCompile Include="Cinema\Screen\Screen.cpp" />
     <ClCompile Include="Lab_6.cpp" />
+    <ClCompile Include="Octree\Octree.cpp" />
+    <ClCompile Include="Parser\Parser.cpp" />
+    <ClCompile Include="Shapes\Box\Box.cpp" />
+    <ClCompile Include="Shapes\Line\Line.cpp" />
+    <ClCompile Include="Shapes\Plane\Plane.cpp" />
+    <ClCompile Include="Shapes\Point\Point.cpp" />
+    <ClCompile Include="Shapes\Triangle\Triangle.cpp" />
+    <ClCompile Include="Shapes\Vector\Vector.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Cinema\Camera\Camera.h" />
+    <ClInclude Include="Cinema\Light\Light.h" />
+    <ClInclude Include="Cinema\Screen\Screen.h" />
+    <ClInclude Include="Octree\Octree.h" />
+    <ClInclude Include="Parser\Parser.h" />
+    <ClInclude Include="Shapes\Box\Box.h" />
+    <ClInclude Include="Shapes\Plane\Plane.h" />
+    <ClInclude Include="Shapes\Point\Point.h" />
+    <ClInclude Include="Shapes\Position\Position.h" />
+    <ClInclude Include="Shapes\Shape\Shape.h" />
+    <ClInclude Include="Shapes\Triangle\Triangle.h" />
+    <ClInclude Include="Shapes\Vector\Vector.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
