@@ -10,8 +10,7 @@ Triangle::Triangle(Point a, Point b, Point c)
 
 double Triangle::getMaxX()
 {
-    double currentX,
-        maxX = INT_MIN;
+    double currentX, maxX = INT_MIN;
 
     for (int i = 0; i < 3; i++)
     {
@@ -28,8 +27,7 @@ double Triangle::getMaxX()
 
 double Triangle::getMaxY()
 {
-    double currentY,
-        maxY = INT_MIN;
+    double currentY, maxY = INT_MIN;
 
     for (int i = 0; i < 3; i++)
     {
@@ -149,88 +147,71 @@ double Triangle::getMinZ()
 
 bool Triangle::lineIntersect(Line &line)
 {
-    double nX, nY, nZ, d;
-    /*Ïàðàìåòðû ïëîñêîñòè*/
+    if (getIntersectPoint(line) == NULL)
+        return false;
+    Point* intersectPoint = getIntersectPoint(line);
+
+    Point *newVertex = new Point[3];
+    getNewVertex(newVertex, intersectPoint);
+
+    double a1, a2, a3;
+    a1 = newVertex[0].getX() * newVertex[1].getX() + newVertex[0].getY() * newVertex[1].getY() + newVertex[0].getZ() * newVertex[1].getZ();
+    a2 = newVertex[1].getX() * newVertex[2].getX() + newVertex[1].getY() * newVertex[2].getY() + newVertex[1].getZ() * newVertex[2].getZ();
+    a3 = newVertex[2].getX() * newVertex[0].getX() + newVertex[2].getY() * newVertex[0].getY() + newVertex[2].getZ() * newVertex[0].getZ();
+
+    double total = (acos(a1) + acos(a2) + acos(a3)) * (180 / M_PI);
+
+    if (abs(total - 360) > 1e-3)
+        return false;
+
+    return true;
+}
+
+
+Point* Triangle::getIntersectPoint(Line& line) {
+    double nX, nY, nZ, d, mod;
+
     nX = (vertexes[1].getY() - vertexes[0].getY()) * (vertexes[2].getZ() - vertexes[0].getZ()) - (vertexes[1].getZ() - vertexes[0].getZ()) * (vertexes[2].getY() - vertexes[0].getY());
     nY = (vertexes[1].getZ() - vertexes[0].getZ()) * (vertexes[2].getX() - vertexes[0].getX()) - (vertexes[1].getX() - vertexes[0].getX()) * (vertexes[2].getZ() - vertexes[0].getZ());
     nZ = (vertexes[1].getX() - vertexes[0].getX()) * (vertexes[2].getY() - vertexes[0].getY()) - (vertexes[1].getY() - vertexes[0].getY()) * (vertexes[2].getX() - vertexes[0].getX());
 
-    /*Íîðìàëèçîâàòü Í*/
-    double mod = sqrt(pow(nX, 2) * pow(nY, 2) * pow(nZ, 2));
+    mod = sqrt(pow(nX, 2) * pow(nY, 2) * pow(nZ, 2));
     mod = 1 / mod;
     nX = nX * mod;
     nY = nY * mod;
     nZ = nZ * mod;
-    /**/
 
     d = -nX * vertexes[0].getX() - nY * vertexes[0].getY() - nZ * vertexes[0].getZ();
 
-    double tmp1;
+     double tmp1 = nX * (line.getSecondPoint().getX() - line.getFirstPoint().getX()) +
+           nY * (line.getSecondPoint().getY() - line.getSecondPoint().getY()) + 
+           nZ * (line.getSecondPoint().getZ() - line.getFirstPoint().getZ());
 
-    tmp1 = nX * (line.getSecondPoint().getX() - line.getFirstPoint().getX()) + nY * (line.getSecondPoint().getY() - line.getSecondPoint().getY()) + nZ * (line.getSecondPoint().getZ() - line.getFirstPoint().getZ());
     if (abs(tmp1) < 1e-3)
-        return false;
+        return NULL;
 
-    double tmp2;
-
-    tmp2 = -(d + nX * line.getFirstPoint().getX() + nY * line.getFirstPoint().getY() + nZ * line.getFirstPoint().getZ());
-
-    /*intersectPoint - òî÷êà ïåðåñå÷åíèÿ*/
-    Point *intersectPoint = new Point(line.getFirstPoint().getX() + tmp2 * (line.getSecondPoint().getX() - line.getFirstPoint().getX()), line.getFirstPoint().getY() + tmp2 * (line.getSecondPoint().getY() - line.getFirstPoint().getY()), line.getFirstPoint().getZ() + tmp2 * (line.getSecondPoint().getZ() - line.getFirstPoint().getZ()));
+     double tmp2 = -(d + nX * line.getFirstPoint().getX() + nY * line.getFirstPoint().getY() + nZ * line.getFirstPoint().getZ());
 
     if (tmp2 < 0 || tmp2 > 1)
-        return false;
+        return NULL;
 
-    Point *newVerterex = new Point[3];
+    Point* intersectPoint = new Point(line.getFirstPoint().getX() + tmp2 * (line.getSecondPoint().getX() - line.getFirstPoint().getX()), line.getFirstPoint().getY() + tmp2 * (line.getSecondPoint().getY() - line.getFirstPoint().getY()), line.getFirstPoint().getZ() + tmp2 * (line.getSecondPoint().getZ() - line.getFirstPoint().getZ()));
 
-    newVerterex[0].setX(vertexes[0].getX() - intersectPoint->getX());
-    newVerterex[0].setY(vertexes[0].getY() - intersectPoint->getY());
-    newVerterex[0].setZ(vertexes[0].getZ() - intersectPoint->getZ());
+    return intersectPoint;
+}
 
-    /*Normalize newVertex[0]*/
-    mod = sqrt(pow(newVerterex[0].getX(), 2) * pow(newVerterex[0].getY(), 2) * pow(newVerterex[0].getZ(), 2));
-    mod = 1 / mod;
-    newVerterex[0].setX(newVerterex[0].getX() * mod);
-    newVerterex[0].setY(newVerterex[0].getY() * mod);
-    newVerterex[0].setZ(newVerterex[0].getZ() * mod);
-    /**/
 
-    newVerterex[1].setX(vertexes[1].getX() - intersectPoint->getX());
-    newVerterex[1].setY(vertexes[1].getY() - intersectPoint->getY());
-    newVerterex[1].setZ(vertexes[1].getZ() - intersectPoint->getZ());
+void Triangle::getNewVertex(Point* newVertex, Point* intersectPoint) 
+{
+    for (int i = 0; i < 3; i++) {
+        newVertex[i].setX(vertexes[i].getX() - intersectPoint->getX());
+        newVertex[i].setY(vertexes[i].getY() - intersectPoint->getY());
+        newVertex[i].setZ(vertexes[i].getZ() - intersectPoint->getZ());
 
-    /*Normalize newVertex[1]*/
-    mod = sqrt(pow(newVerterex[1].getX(), 2) * pow(newVerterex[1].getY(), 2) * pow(newVerterex[1].getZ(), 2));
-    mod = 1 / mod;
-    newVerterex[1].setX(newVerterex[1].getX() * mod);
-    newVerterex[1].setY(newVerterex[1].getY() * mod);
-    newVerterex[1].setZ(newVerterex[1].getZ() * mod);
-    /**/
-
-    newVerterex[2].setX(vertexes[2].getX() - intersectPoint->getX());
-    newVerterex[2].setY(vertexes[2].getY() - intersectPoint->getY());
-    newVerterex[2].setZ(vertexes[2].getZ() - intersectPoint->getZ());
-    /*Normalize newVertex[2]*/
-    mod = sqrt(pow(newVerterex[2].getX(), 2) * pow(newVerterex[2].getY(), 2) * pow(newVerterex[2].getZ(), 2));
-    mod = 1 / mod;
-    newVerterex[2].setX(newVerterex[2].getX() * mod);
-    newVerterex[2].setY(newVerterex[2].getY() * mod);
-    newVerterex[2].setZ(newVerterex[2].getZ() * mod);
-    /**/
-
-    double a1, a2, a3;
-    a1 = newVerterex[0].getX() * newVerterex[1].getX() + newVerterex[0].getY() * newVerterex[1].getY() + newVerterex[0].getZ() * newVerterex[1].getZ();
-    a2 = newVerterex[1].getX() * newVerterex[2].getX() + newVerterex[1].getY() * newVerterex[2].getY() + newVerterex[1].getZ() * newVerterex[2].getZ();
-    a3 = newVerterex[2].getX() * newVerterex[0].getX() + newVerterex[2].getY() * newVerterex[0].getY() + newVerterex[2].getZ() * newVerterex[0].getZ();
-
-    double total;
-
-    total = (acos(a1) + acos(a2) + acos(a3)) * (180 / M_PI);
-
-    if (abs(total - 360) > 1e-3)
-    {
-        return false;
+        double mod = sqrt(pow(newVertex[i].getX(), 2) * pow(newVertex[i].getY(), 2) * pow(newVertex[i].getZ(), 2));
+        mod = 1 / mod;
+        newVertex[i].setX(newVertex[0].getX() * mod);
+        newVertex[i].setY(newVertex[0].getY() * mod);
+        newVertex[i].setZ(newVertex[0].getZ() * mod);
     }
-
-    return true;
 }

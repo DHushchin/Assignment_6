@@ -9,8 +9,6 @@
 #include "../Point/Point.h"
 #include "../Line/Line.h"
 
-//const double M_PI = 3.141592653589793238463;
-
 using namespace std;
 
 class Triangle : public Shape
@@ -18,7 +16,7 @@ class Triangle : public Shape
 private:
     Point vertexes[3];
     bool isInserted;
-
+    void getNewVertex(Point* newVertex, Point* intersectPoint);
 public:
     Triangle() {}
 
@@ -45,4 +43,6 @@ public:
     double getMinZ();
 
     bool lineIntersect(Line &line);
+
+    Point* getIntersectPoint(Line& line);
 };
