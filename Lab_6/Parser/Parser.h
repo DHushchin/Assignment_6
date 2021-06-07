@@ -27,7 +27,7 @@ public:
 
     vector<Point> getPoints();
 
-    vector<Triangle> getTriangles();
+    vector<Triangle>& getTriangles();
 
     Point findMaxPoint();
 

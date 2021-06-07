@@ -171,3 +171,7 @@ Point Parser::findMaxPoint()
 
     return max;
 }
+
+vector<Triangle>& Parser::getTriangles() {
+    return triangles;
+}

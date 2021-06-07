@@ -79,16 +79,9 @@ bool Triangle::getInserted()
     return this->isInserted;
 }
 
-vector<Point> Triangle::getPoints()
+Point* Triangle::getPoints()
 {
-    vector<Point> points;
-
-    for (int i = 0; i < 3; i++)
-    {
-        points.push_back(vertexes[i]);
-    }
-
-    return points;
+    return vertexes;
 }
 
 double Triangle::getMinX()

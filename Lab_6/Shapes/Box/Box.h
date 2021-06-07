@@ -30,7 +30,7 @@ public:
 
     Point getBRB();
 
-    void setTriangle(Triangle triangle);
+    void setTriangle(Triangle& triangle);
 
     vector<Triangle> getTriangles();
 

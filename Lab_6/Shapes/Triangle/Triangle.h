@@ -34,7 +34,7 @@ public:
 
     bool getInserted();
 
-    vector<Point> getPoints();
+    Point* getPoints();
 
     double getMinX();
 

@@ -17,9 +17,9 @@ Box::Box(const Box& box)
 
 void Box::resize(Position pos)
 {
-    double midX = (top_left_front.getX() + bottom_right_back.getX()) / 2,
-           midY = (top_left_front.getY() + bottom_right_back.getY()) / 2,
-           midZ = (top_left_front.getZ() + bottom_right_back.getZ()) / 2;
+    double midX = (top_left_front.getX() + bottom_right_back.getX()) * 0.5,
+           midY = (top_left_front.getY() + bottom_right_back.getY()) * 0.5,
+           midZ = (top_left_front.getZ() + bottom_right_back.getZ()) * 0.5;
 
     switch (pos)
     {
@@ -92,7 +92,7 @@ Point Box::getBRB()
     return this->bottom_right_back;
 }
 
-void Box::setTriangle(Triangle triangle)
+void Box::setTriangle(Triangle& triangle)
 {
     this->triangles.push_back(triangle);
 }

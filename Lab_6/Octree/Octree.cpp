@@ -2,16 +2,11 @@
 
 Octree::Octree() {}
 
-Octree::Octree(Box box)
+Octree::Octree(Box& box)
 {
     this->box = box;
 
-    children.assign(8, nullptr);
-
-    for (int i = 0; i < 8; i++)
-    {
-        children[i] = new Octree();
-    }
+    children.assign(8, NULL);
 }
 
 void Octree::setBox(Box box)
@@ -19,13 +14,14 @@ void Octree::setBox(Box box)
     this->box = box;
 }
 
-void Octree::insert(Triangle triangle)
+void Octree::insert(Triangle& triangle)
 {
-    int midX = (box.getTLF().getX() + box.getBRB().getX()) / 2,
-        midY = (box.getTLF().getY() + box.getBRB().getY()) / 2,
-        midZ = (box.getTLF().getZ() + box.getBRB().getZ()) / 2;
 
-    vector<Point> points = triangle.getPoints();
+    double midX = (box.getTLF().getX() + box.getBRB().getX()) * 0.5,
+           midY = (box.getTLF().getY() + box.getBRB().getY()) * 0.5,
+           midZ = (box.getTLF().getZ() + box.getBRB().getZ()) * 0.5;
+
+    Point* points = triangle.getPoints();
 
     for (int i = 0; i < 3; i++)
     {
@@ -40,7 +36,7 @@ void Octree::insert(Triangle triangle)
                 throw "Point out of range";
             }
         }
-        catch (const char *exception)
+        catch (const char* exception)
         {
             cerr << "Error: " << exception << '\n';
         }
@@ -100,15 +96,16 @@ void Octree::insert(Triangle triangle)
     if (points[0].getPosition() == points[1].getPosition() && points[1].getPosition() == points[2].getPosition())
     {
         int index = (int)points[0].getPosition();
-        Box newBox(box);
-
-        newBox.resize(points[0].getPosition());
-        children[index]->setBox(newBox);
+        if (children[index] == NULL) {
+            Box newBox(box);
+            newBox.resize(points[0].getPosition());
+            children[index] = new Octree(newBox);
+        }
         children[index]->insert(triangle);
     }
-    else if (!triangle.getInserted())
+    else
     {
-        box.setTriangle(triangle);
+        this->box.setTriangle(triangle);
         triangle.setInserted();
     }
 }
