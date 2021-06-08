@@ -138,81 +138,49 @@ double Triangle::getMinZ()
     return minZ;
 }
 
-
-Point *Triangle::lineIntersect(Line &line)
+double distEuclid(Point A, Point B)
 {
-    if (getIntersectPoint(line) == NULL)
-    {
-        return NULL;
-    }
-
-    Point *intersectPoint = getIntersectPoint(line);
-
-    Point *newVertex = new Point[3];
-    getNewVertex(newVertex, intersectPoint);
-
-    double a1, a2, a3;
-    a1 = newVertex[0].getX() * newVertex[1].getX() + newVertex[0].getY() * newVertex[1].getY() + newVertex[0].getZ() * newVertex[1].getZ();
-    a2 = newVertex[1].getX() * newVertex[2].getX() + newVertex[1].getY() * newVertex[2].getY() + newVertex[1].getZ() * newVertex[2].getZ();
-    a3 = newVertex[2].getX() * newVertex[0].getX() + newVertex[2].getY() * newVertex[0].getY() + newVertex[2].getZ() * newVertex[0].getZ();
-
-    double total = (acos(a1) + acos(a2) + acos(a3)) * (180 / M_PI);
-
-    if (abs(total - 360) > 1e-3)
-    {
-        return NULL;
-    }
-
-    return intersectPoint;
+    return sqrt((A.getX() - B.getX()) * (A.getX() - B.getX()) + (A.getY() - B.getY()) * (A.getY() - B.getY()) + (A.getZ() - B.getZ()) * (A.getZ() - B.getZ()));
 }
 
-Point *Triangle::getIntersectPoint(Line &line)
+double s(Point A, Point B, Point C)
 {
-    double nX, nY, nZ, d, mod;
-
-    nX = (vertexes[1].getY() - vertexes[0].getY()) * (vertexes[2].getZ() - vertexes[0].getZ()) - (vertexes[1].getZ() - vertexes[0].getZ()) * (vertexes[2].getY() - vertexes[0].getY());
-    nY = (vertexes[1].getZ() - vertexes[0].getZ()) * (vertexes[2].getX() - vertexes[0].getX()) - (vertexes[1].getX() - vertexes[0].getX()) * (vertexes[2].getZ() - vertexes[0].getZ());
-    nZ = (vertexes[1].getX() - vertexes[0].getX()) * (vertexes[2].getY() - vertexes[0].getY()) - (vertexes[1].getY() - vertexes[0].getY()) * (vertexes[2].getX() - vertexes[0].getX());
-    
-    mod = sqrt(pow(nX, 2.0) * pow(nY, 2.0) * pow(nZ, 2.0));
-    mod = pow(mod, -1);
-    nX = nX * mod;
-    nY = nY * mod;
-    nZ = nZ * mod;
-    
-    d = -nX * vertexes[0].getX() - nY * vertexes[0].getY() - nZ * vertexes[0].getZ();
-
-    double tmp1 = nX * (line.getSecondPoint().getX() - line.getFirstPoint().getX()) +
-                  nY * (line.getSecondPoint().getY() - line.getFirstPoint().getY()) +
-                  nZ * (line.getSecondPoint().getZ() - line.getFirstPoint().getZ());
-
-    if (abs(tmp1) < 1e-3)
-        return NULL;
-
-    double tmp2 = -(d + nX * line.getFirstPoint().getX() + nY * line.getFirstPoint().getY() + nZ * line.getFirstPoint().getZ()) / tmp1;
-    
-    if (tmp2 < 0 || tmp2 > 1)
-        return NULL;
-
-    Point *intersectPoint = new Point(line.getFirstPoint().getX() + tmp2 * (line.getSecondPoint().getX() - line.getFirstPoint().getX()), 
-                                      line.getFirstPoint().getY() + tmp2 * (line.getSecondPoint().getY() - line.getFirstPoint().getY()), 
-                                      line.getFirstPoint().getZ() + tmp2 * (line.getSecondPoint().getZ() - line.getFirstPoint().getZ()));
-
-    return intersectPoint;
+    double a = distEuclid(A, B);
+    double b = distEuclid(B, C);
+    double c = distEuclid(A, C);
+    double p = (a + b + c) / 2.;
+    return sqrt(fabs(p * (p - a) * (p - b) * (p - c)));
 }
 
-void Triangle::getNewVertex(Point *newVertex, Point *intersectPoint)
+bool Triangle::contains(Point point)
 {
-    for (int i = 0; i < 3; i++)
-    {
-        newVertex[i].setX(vertexes[i].getX() - intersectPoint->getX());
-        newVertex[i].setY(vertexes[i].getY() - intersectPoint->getY());
-        newVertex[i].setZ(vertexes[i].getZ() - intersectPoint->getZ());
+    // Point a = this->vertexes[0];
+    // Point b = this->vertexes[1];
+    // Point c = this->vertexes[2];
 
-        double mod = sqrt(pow(newVertex[i].getX(), 2) * pow(newVertex[i].getY(), 2) * pow(newVertex[i].getZ(), 2));
-        mod = 1 / mod;
-        newVertex[i].setX(newVertex[0].getX() * mod);
-        newVertex[i].setY(newVertex[0].getY() * mod);
-        newVertex[i].setZ(newVertex[0].getZ() * mod);
+    // double t1 = (a.getX() - point.getX()) * (b.getY() - a.getY()) - (b.getX() - a.getX()) * (a.getY() - point.getY()),
+    //        t2 = (b.getX() - point.getX()) * (c.getY() - b.getY()) - (c.getX() - b.getX()) * (b.getY() - point.getY()),
+    //        t3 = (c.getX() - point.getX()) * (a.getY() - c.getY()) - (a.getX() - c.getX()) * (c.getY() - point.getY());
+
+    // if (t1 >= 0 && t2 >= 0 && t3 >= 0)
+    //     return true;
+
+    // if (t1 < 0 && t2 < 0 && t3 < 0)
+    //     return true;
+
+    // return false;
+    return s(point, this->vertexes[0], this->vertexes[1]) + s(point, this->vertexes[0], this->vertexes[2]) + s(this->vertexes[1], this->vertexes[2], point) - 1e-5 < s(this->vertexes[0], this->vertexes[1], this->vertexes[2]);
+}
+
+Point Triangle::intersect(Line line)
+{
+    Plane trianglePlane(this->vertexes[0], this->vertexes[1], this->vertexes[2]);
+    Point intersectPoint = trianglePlane.intersect(line);
+
+    if (this->contains(intersectPoint))
+    {
+        return intersectPoint;
     }
+
+    return Point(-9999, -9999, -9999);
 }

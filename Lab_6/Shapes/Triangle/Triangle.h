@@ -8,6 +8,7 @@
 #include "../Shape/Shape.h"
 #include "../Point/Point.h"
 #include "../Line/Line.h"
+#include "../Plane/Plane.h"
 
 using namespace std;
 
@@ -20,6 +21,8 @@ private:
 
 public:
     Triangle() {}
+
+    bool contains(Point point);
 
     Triangle(Point a, Point b, Point c);
 
@@ -43,8 +46,5 @@ public:
 
     double getMinZ();
 
-    Point *lineIntersect(Line &line);
-
-    Point *getIntersectPoint(Line &line);
-
+    Point intersect(Line line);
 };

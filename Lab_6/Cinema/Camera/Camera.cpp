@@ -1,69 +1,56 @@
 #include "Camera.h"
 
-Camera::Camera() : base(0, -20, 0)
+Camera::Camera() : base(0, -50, 0)
 {
-    Point screenBase(this->base.getX(), this->base.getY() + 5, this->base.getZ());
-    Plane screenImage(0, 1, 0, -this->base.getY() - 5);
-    this->screen = Screen(screenBase, screenImage, 100, 100);
+    int distance = 10;
 
-    Point lightBase(this->base.getX(), this->base.getY(), this->base.getZ() + 10);
+    Point screenBase(this->base.getX(), this->base.getY() + distance, this->base.getZ());
+    Plane screenImage(0, 1, 0, -this->base.getY() - distance);
+    this->screen = Screen(screenBase, screenImage, 1000, 1000);
+
+    Point lightBase(this->base.getX(), this->base.getY(), this->base.getZ() + 2);
     this->light = Light(lightBase);
 }
 
-void Camera::photo(vector<Triangle>& triangles)
+void Camera::photo(vector<Triangle> &triangles)
 {
     Point screenBase = this->screen.getBase();
     Point currentPoint;
 
-    vector<Line> cameraLines;
-    vector<Line> lightLines;
-
-    double x;
-    double y;
-    double z;
-
     int screenWidth = screen.getWidth();
     int screenHeight = screen.getHeight();
     int screenSize = screen.getSize();
+
+    int pixelX, pixelY = screenHeight - 1;
+
     Bmp image = this->screen.getImage();
 
-    bool isIntersected = false;
-    
-    for (double i = screenBase.getZ() + (double)screenSize * 0.5 ; i >= screenBase.getZ() - (double)screenSize * 0.5; i -= (double)screenSize / (double)screenHeight)
+    for (double i = screenBase.getZ() + (double)screenSize * 0.5; i > (screenBase.getZ() - screenSize * 0.5); i -= screenSize / (double)screenHeight, pixelY--)
     {
-        for (double j = screenBase.getX() - (double)screenSize * 0.5; j <= screenBase.getX() + (double)screenSize * 0.5; j += (double)screenSize / (double)screenWidth)
+        for (double j = screenBase.getX() - (double)screenSize * 0.5, pixelX = 0; j < (screenBase.getX() + screenSize * 0.5); j += screenSize / (double)screenWidth, pixelX++)
         {
             currentPoint = Point(j, screenBase.getY(), i);
             Line cameraRay = Line(this->base, currentPoint);
 
             for (int k = 0; k < triangles.size(); k++)
             {
-                Point *triangleIntersect = triangles[i].lineIntersect(cameraRay);
+                Point triangleIntersect = triangles[k].intersect(cameraRay);
 
-                if (triangleIntersect != NULL)
+                if (triangleIntersect.getX() != -9999)
                 {
-                    isIntersected = true;
-                    Line lightRay(*triangleIntersect, this->light.getBase());
+                    Line lightRay(triangleIntersect, this->light.getBase());
+
                     double angle = angleBetween(cameraRay.getDirectionVector(), lightRay.getDirectionVector());
+                    double cosAbs = abs(cos(angle));
 
-                    Color pixelColor(angle * 255, angle * 255, angle * 255);
+                    Color pixelColor(cosAbs * 255, cosAbs * 255, cosAbs * 255);
 
-                    image.setPixel(j + screenSize * 0.5, i + screenSize * 0.5, pixelColor);
-                }               
+                    image.setPixel(pixelX, pixelY, pixelColor);
+                }
             }
-            cout << isIntersected ? "intersect" : "false";
-            cout << endl;
-            isIntersected = false;
         }
     }
-    /*
-    Triangle a(Point(0, 0, 1), Point(0, 1, 0), Point(1, 0, 0));
-    Line line(Point(0, 0, 0), Point(1, 1, 1));
-    if (a.lineIntersect(line))
-        cout << "intersect";
-    else
-        cout << "false";
-    cout << endl;*/
+
     string fileName = "a.bmp";
     image.write(fileName, fileName);
 

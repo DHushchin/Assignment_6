@@ -32,7 +32,7 @@ double Vector::getLength()
 
 void Vector::print()
 {
-    printf("Point: % 2.6f, % 2.6f, % 2.6f, %2.6f\n", this->x, this->y, this->z, this->length);
+    printf("Vector: (% 2.6f, % 2.6f, % 2.6f), %2.6f\n", this->x, this->y, this->z, this->length);
 }
 
 double scalarProduct(Vector a, Vector b)

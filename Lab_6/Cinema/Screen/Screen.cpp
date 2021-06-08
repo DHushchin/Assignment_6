@@ -2,7 +2,7 @@
 
 Screen::Screen() {}
 
-Screen::Screen(const Point &base, const Plane &imagePlane, int width, int height) : width(width), height(height), base(base), imagePlane(imagePlane), size(1), image(width, height)
+Screen::Screen(const Point &base, const Plane &imagePlane, int width, int height) : width(width), height(height), base(base), imagePlane(imagePlane), size(2), image(width, height)
 {
 }
 
