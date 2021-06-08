@@ -7,6 +7,7 @@
 #include "../../Shapes/Triangle/Triangle.h"
 #include "../../Shapes/Vector/Vector.h"
 #include "../../Shapes/Line/Line.h"
+#include "../../Photo/BMP.h"
 
 using namespace std;
 
@@ -21,5 +22,5 @@ private:
 public:
     Camera();
 
-    void photo();
+    void photo(vector<Triangle> triangles);
 };

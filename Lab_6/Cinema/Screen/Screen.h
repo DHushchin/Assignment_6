@@ -3,6 +3,7 @@
 #include <string>
 
 #include "../../Shapes/Point/Point.h"
+#include "../../Photo/BMP.h"
 #include "../../Shapes/Plane/Plane.h"
 
 using namespace std;
@@ -11,7 +12,9 @@ class Screen
 {
 private:
     Point base;
-    Plane image;
+    Plane imagePlane;
+    Bmp image;
+
     int size;
     int width;
     int height;
@@ -19,7 +22,7 @@ private:
 public:
     Screen();
 
-    Screen(const Point &base, const Plane &image, int width, int height);
+    Screen(const Point &base, const Plane &imagePlane, int width, int height);
 
     void addPixel(int x, int y);
 
@@ -27,7 +30,9 @@ public:
 
     Point getBase();
 
-    Plane getImage();
+    Plane getImagePlane();
+
+    Bmp getImage();
 
     int getWidth();
 

@@ -2,7 +2,7 @@
 
 Screen::Screen() {}
 
-Screen::Screen(const Point &base, const Plane &image, int width, int height) : width(width), height(height), base(base), image(image), size(2)
+Screen::Screen(const Point &base, const Plane &imagePlane, int width, int height) : width(width), height(height), base(base), imagePlane(imagePlane), size(2), image(width, height)
 {
 }
 
@@ -14,7 +14,12 @@ void Screen::print()
 {
 }
 
-Plane Screen::getImage()
+Plane Screen::getImagePlane()
+{
+    return this->imagePlane;
+}
+
+Bmp Screen::getImage()
 {
     return this->image;
 }

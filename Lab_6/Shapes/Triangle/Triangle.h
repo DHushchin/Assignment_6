@@ -16,7 +16,8 @@ class Triangle : public Shape
 private:
     Point vertexes[3];
     bool isInserted;
-    void getNewVertex(Point* newVertex, Point* intersectPoint);
+    void getNewVertex(Point *newVertex, Point *intersectPoint);
+
 public:
     Triangle() {}
 
@@ -34,7 +35,7 @@ public:
 
     bool getInserted();
 
-    Point* getPoints();
+    Point *getPoints();
 
     double getMinX();
 
@@ -42,7 +43,7 @@ public:
 
     double getMinZ();
 
-    bool lineIntersect(Line &line);
+    Point *lineIntersect(Line &line);
 
-    Point* getIntersectPoint(Line& line);
+    Point *getIntersectPoint(Line &line);
 };
