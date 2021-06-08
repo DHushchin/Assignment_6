@@ -41,7 +41,7 @@ typedef vector<Color> ColorRow;
 class Bmp
 {
 public:
-    Bmp() {}
+    Bmp();
 
     Bmp(int width, int height);
 

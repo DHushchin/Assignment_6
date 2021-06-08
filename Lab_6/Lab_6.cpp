@@ -10,7 +10,7 @@ int main()
 {
 
     Parser parser;
-    parser.parse("sphere.obj");
+    parser.parse("objects\\sphere.obj");
 
     Camera camera;
     camera.photo(parser.getTriangles());

@@ -10,7 +10,7 @@ Camera::Camera() : base(0, -20, 0)
     this->light = Light(lightBase);
 }
 
-void Camera::photo(vector<Triangle> triangles)
+void Camera::photo(vector<Triangle>& triangles)
 {
     Point screenBase = this->screen.getBase();
     Point currentPoint;
@@ -27,9 +27,11 @@ void Camera::photo(vector<Triangle> triangles)
     int screenSize = screen.getSize();
     Bmp image = this->screen.getImage();
 
-    for (double i = screenBase.getZ() + screenSize / 2; i >= screenBase.getZ() - screenSize / 2; i -= screenSize / (double)screenHeight)
+    bool isIntersected = false;
+    
+    for (double i = screenBase.getZ() + (double)screenSize * 0.5 ; i >= screenBase.getZ() - (double)screenSize * 0.5; i -= (double)screenSize / (double)screenHeight)
     {
-        for (double j = screenBase.getX() - screenSize / 2; j <= screenBase.getX() + screenSize / 2; j += screenSize / (double)screenWidth)
+        for (double j = screenBase.getX() - (double)screenSize * 0.5; j <= screenBase.getX() + (double)screenSize * 0.5; j += (double)screenSize / (double)screenWidth)
         {
             currentPoint = Point(j, screenBase.getY(), i);
             Line cameraRay = Line(this->base, currentPoint);
@@ -40,19 +42,29 @@ void Camera::photo(vector<Triangle> triangles)
 
                 if (triangleIntersect != NULL)
                 {
+                    isIntersected = true;
                     Line lightRay(*triangleIntersect, this->light.getBase());
                     double angle = angleBetween(cameraRay.getDirectionVector(), lightRay.getDirectionVector());
 
                     Color pixelColor(angle * 255, angle * 255, angle * 255);
 
-                    image.setPixel(j, i, pixelColor);
-                }
+                    image.setPixel(j + screenSize * 0.5, i + screenSize * 0.5, pixelColor);
+                }               
             }
+            cout << isIntersected ? "intersect" : "false";
+            cout << endl;
+            isIntersected = false;
         }
     }
-
+    /*
+    Triangle a(Point(0, 0, 1), Point(0, 1, 0), Point(1, 0, 0));
+    Line line(Point(0, 0, 0), Point(1, 1, 1));
+    if (a.lineIntersect(line))
+        cout << "intersect";
+    else
+        cout << "false";
+    cout << endl;*/
     string fileName = "a.bmp";
-
     image.write(fileName, fileName);
 
     // cout << "Rays lines:" << endl;

@@ -22,5 +22,5 @@ private:
 public:
     Camera();
 
-    void photo(vector<Triangle> triangles);
+    void photo(vector<Triangle>& triangles);
 };

@@ -126,9 +126,9 @@ void Octree::findIntersectedTriangles(Line &line, vector<Triangle> &IntersectedT
 
                 for (int i = 0; i < triangles.size(); i++)
                 {
-                    if (triangles[i].lineIntersect(line))
+                    //if (triangles[i].lineIntersect(line))
                     {
-                        IntersectedTriangles.push_back(triangles[i]);
+                    //    IntersectedTriangles.push_back(triangles[i]);
                     }
                 }
             }

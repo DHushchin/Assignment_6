@@ -6,7 +6,9 @@
 #include "../Shape/Shape.h"
 #include "../Point/Point.h"
 
- const double M_PI = 3.141592653589793238463;
+
+// const double M_PI = 3.141592653589793238463;
+
 
 using namespace std;
 
