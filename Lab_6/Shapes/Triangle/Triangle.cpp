@@ -1,6 +1,6 @@
 #include "Triangle.h"
 
-Triangle::Triangle(Point a, Point b, Point c)
+Triangle::Triangle(Point& a, Point& b, Point& c)
 {
     this->vertexes[0] = a;
     this->vertexes[1] = b;
@@ -12,7 +12,7 @@ double Triangle::getMaxX()
 {
     double currentX, maxX = INT_MIN;
 
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 3; ++i)
     {
         currentX = vertexes[i].getX();
 
@@ -29,7 +29,7 @@ double Triangle::getMaxY()
 {
     double currentY, maxY = INT_MIN;
 
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 3; ++i)
     {
         currentY = vertexes[i].getY();
 
@@ -47,7 +47,7 @@ double Triangle::getMaxZ()
     double currentZ,
         maxZ = INT_MIN;
 
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 3; ++i)
     {
         currentZ = vertexes[i].getZ();
 
@@ -63,7 +63,7 @@ double Triangle::getMaxZ()
 void Triangle::print()
 {
     cout << "Triangle: " << endl;
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 3; ++i)
     {
         vertexes[i].print();
     }
@@ -89,7 +89,7 @@ double Triangle::getMinX()
     double currentX,
         minX = INT_MAX;
 
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 3; ++i)
     {
         currentX = vertexes[i].getX();
 
@@ -107,7 +107,7 @@ double Triangle::getMinY()
     double currentY,
         minY = INT_MAX;
 
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 3; ++i)
     {
         currentY = vertexes[i].getY();
 
@@ -125,7 +125,7 @@ double Triangle::getMinZ()
     double currentZ,
         minZ = INT_MAX;
 
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 3; ++i)
     {
         currentZ = vertexes[i].getZ();
 
@@ -143,18 +143,15 @@ double Triangle::distEuclid(Point& A, Point& B)
     return sqrt((A.getX() - B.getX()) * (A.getX() - B.getX()) + (A.getY() - B.getY()) * (A.getY() - B.getY()) + (A.getZ() - B.getZ()) * (A.getZ() - B.getZ()));
 }
 
-double Triangle::s(Point& A, Point& B, Point& C)
+double Triangle::Space(Point& A, Point& B, Point& C)
 {
-    double a = distEuclid(A, B);
-    double b = distEuclid(B, C);
-    double c = distEuclid(A, C);
-    double p = (a + b + c) / 2.0;
+    double a = distEuclid(A, B), b = distEuclid(B, C), c = distEuclid(A, C), p = (a + b + c) / 2.0;
     return sqrt(fabs(p * (p - a) * (p - b) * (p - c)));
 }
 
 bool Triangle::contains(Point& point)
 {
-    return s(point, this->vertexes[0], this->vertexes[1]) + s(point, this->vertexes[0], this->vertexes[2]) + s(this->vertexes[1], this->vertexes[2], point) - 1e-5 < s(this->vertexes[0], this->vertexes[1], this->vertexes[2]);
+    return Space(point, this->vertexes[0], this->vertexes[1]) + Space(point, this->vertexes[0], this->vertexes[2]) + Space(this->vertexes[1], this->vertexes[2], point) - 1e-5 < Space(this->vertexes[0], this->vertexes[1], this->vertexes[2]);
 }
 
 Point Triangle::intersect(Line& line)

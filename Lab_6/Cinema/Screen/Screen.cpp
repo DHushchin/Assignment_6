@@ -6,14 +6,6 @@ Screen::Screen(const Point &base, const Plane &imagePlane, int width, int height
 {
 }
 
-void Screen::addPixel(int x, int y)
-{
-}
-
-void Screen::print()
-{
-}
-
 Plane Screen::getImagePlane()
 {
     return this->imagePlane;

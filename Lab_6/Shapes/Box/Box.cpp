@@ -94,9 +94,6 @@ Point Box::getBRB()
 
 void Box::setTriangle(Triangle& triangle)
 {
-	for (size_t i = 0; i < triangles.size(); i++)
-		if (triangles[i] == triangle)
-			return;
     this->triangles.push_back(triangle);
 }
 
@@ -120,6 +117,7 @@ bool Box::lineIntersect(Line &line)
 
 	if (plane.intersect(line).getX() != INT_MAX)
 		return true;
+
 	/*front-right*/
 	p1 = this->bottom_right_back;
 	p2 = this->bottom_right_back;
@@ -130,6 +128,7 @@ bool Box::lineIntersect(Line &line)
 
 	if (plane.intersect(line).getX() != INT_MAX)
 		return true;
+
 	/*front-top*/
 	p1 = this->top_left_front;
 	p2 = this->top_left_front;
@@ -140,6 +139,7 @@ bool Box::lineIntersect(Line &line)
 
 	if (plane.intersect(line).getX() != INT_MAX)
 		return true;
+
 	/*back*/
 	p1 = this->bottom_right_back;
 	p2 = this->bottom_right_back;
@@ -150,6 +150,7 @@ bool Box::lineIntersect(Line &line)
 
 	if (plane.intersect(line).getX() != INT_MAX)
 		return true;
+
 	/*bottom*/
 	p1 = this->top_left_front;
 	p2 = this->top_left_front;
@@ -159,6 +160,7 @@ bool Box::lineIntersect(Line &line)
 
 	if (plane.intersect(line).getX() != INT_MAX)
 		return true;
+
 	/*back-left*/
 	p1 = this->top_left_front;
 	p2 = this->top_left_front;

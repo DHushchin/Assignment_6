@@ -9,6 +9,7 @@
 #include "../../Shapes/Line/Line.h"
 #include "../../Photo/BMP.h"
 #include "../../Octree/Octree.h"
+
 using namespace std;
 
 class Camera
@@ -17,7 +18,6 @@ private:
     Screen screen;
     Light light;
     Point base;
-    Line rayTo(Point point);
 
 public:
     Camera();

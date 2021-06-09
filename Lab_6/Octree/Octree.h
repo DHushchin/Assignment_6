@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <iterator>
 
 #include "../Parser/Parser.h"
 #include "../Shapes/Line/Line.h"
@@ -13,7 +14,7 @@ class Octree
 {
 private:
     Box box;
-    vector<Octree*> children;
+    Octree** children;
 
 public:
     Octree();
@@ -24,15 +25,4 @@ public:
 
     void findIntersectedPoint(Line &line, Point& currentPoint, Point& resultPoint, double& minLength);
 
-    void getTriangleNumber(int& sum) {
-        for (size_t i = 0; i < children.size(); i++)
-        {
-            if (children.size() > 0)
-            {
-                if (children[i] != NULL)
-                    children[i]->getTriangleNumber(sum);
-            }
-        }
-        sum += box.getTriangles().size();
-    }
 };

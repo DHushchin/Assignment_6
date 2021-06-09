@@ -17,15 +17,14 @@ class Triangle : public Shape
 private:
     Point vertexes[3];
     bool isInserted;
-    //void getNewVertex(Point *newVertex, Point *intersectPoint);
-    double s(Point& A, Point& B, Point& C);
+    double Space(Point& A, Point& B, Point& C);
 
 public:
     Triangle() { isInserted = false; }
 
     bool contains(Point& point);
 
-    Triangle(Point a, Point b, Point c);
+    Triangle(Point& a, Point& b, Point& c);
 
     double getMaxX();
 
@@ -50,15 +49,4 @@ public:
     Point intersect(Line& line);
 
     double distEuclid(Point& A, Point& B);
-
-    friend bool operator==(const Triangle& a, const Triangle& b) {
-        for (int i = 0; i < 3; i++)
-        {
-            if (a.vertexes[i] != b.vertexes[i])
-                return false;
-        }
-        if (a.isInserted != b.isInserted)
-            return false;
-        return true;
-    }
 };

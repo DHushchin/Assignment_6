@@ -24,10 +24,6 @@ public:
 
     Screen(const Point &base, const Plane &imagePlane, int width, int height);
 
-    void addPixel(int x, int y);
-
-    void print();
-
     Point getBase();
 
     Plane getImagePlane();
