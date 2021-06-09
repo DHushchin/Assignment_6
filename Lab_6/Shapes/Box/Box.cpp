@@ -12,7 +12,7 @@ Box::Box(const Box& box)
 {
     this->bottom_right_back = box.bottom_right_back;
     this->top_left_front = box.top_left_front;
-    this->triangles = box.triangles;
+    //this->triangles = box.triangles;
 }
 
 void Box::resize(Position pos)
@@ -72,12 +72,12 @@ void Box::resize(Position pos)
     }
 }
 
-void Box::setTLF(Point point)
+void Box::setTLF(Point& point)
 {
     this->top_left_front = point;
 }
 
-void Box::setBRB(Point point)
+void Box::setBRB(Point& point)
 {
     this->bottom_right_back = point;
 }
@@ -94,6 +94,9 @@ Point Box::getBRB()
 
 void Box::setTriangle(Triangle& triangle)
 {
+	for (size_t i = 0; i < triangles.size(); i++)
+		if (triangles[i] == triangle)
+			return;
     this->triangles.push_back(triangle);
 }
 
@@ -102,7 +105,7 @@ vector<Triangle> Box::getTriangles()
     return this->triangles;
 }
 
-bool Box::IntersectCurrentPlane(Line line, Point& intersect, int a, int b, int c,int d) {
+bool Box::IntersectCurrentPlane(Line& line, Point& intersect, double a, double b, double c, double d) {
 	double tmp, tmp2;
 	tmp = a * line.getDirectionVector().getX() + b * line.getDirectionVector().getY() + c * line.getDirectionVector().getZ();
 	if (abs(tmp) < 1e-3)
@@ -132,6 +135,7 @@ bool Box::IfIntersect(Point & p1, Point & p2, Point & p3, Line & line, Point & i
 	if (IntersectCurrentPlane(line, intersect, a, b, c, d))
 		if (intersect.getX() >= p1.getX() && intersect.getX() <= p2.getX() && intersect.getY() >= p1.getY() && intersect.getY() <= p3.getY())
 			return true;
+	return false;
 }
 
 bool Box::lineIntersect(Line &line)
@@ -193,5 +197,4 @@ bool Box::lineIntersect(Line &line)
 		return true;
 
     return false;
-
 }

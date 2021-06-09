@@ -69,9 +69,9 @@ void Triangle::print()
     }
 }
 
-void Triangle::setInserted()
+void Triangle::setInserted(bool flag)
 {
-    this->isInserted = true;
+    this->isInserted = flag;
 }
 
 bool Triangle::getInserted()
@@ -138,17 +138,17 @@ double Triangle::getMinZ()
     return minZ;
 }
 
-double distEuclid(Point A, Point B)
+double Triangle::distEuclid(Point A, Point B)
 {
     return sqrt((A.getX() - B.getX()) * (A.getX() - B.getX()) + (A.getY() - B.getY()) * (A.getY() - B.getY()) + (A.getZ() - B.getZ()) * (A.getZ() - B.getZ()));
 }
 
-double s(Point A, Point B, Point C)
+double Triangle::s(Point A, Point B, Point C)
 {
     double a = distEuclid(A, B);
     double b = distEuclid(B, C);
     double c = distEuclid(A, C);
-    double p = (a + b + c) / 2.;
+    double p = (a + b + c) / 2.0;
     return sqrt(fabs(p * (p - a) * (p - b) * (p - c)));
 }
 

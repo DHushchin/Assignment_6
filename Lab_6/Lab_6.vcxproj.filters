@@ -95,5 +95,8 @@
     <ClInclude Include="Photo\BMP.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="Shapes\Line\Line.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -8,7 +8,7 @@
 #include "../../Shapes/Vector/Vector.h"
 #include "../../Shapes/Line/Line.h"
 #include "../../Photo/BMP.h"
-
+#include "../../Octree/Octree.h"
 using namespace std;
 
 class Camera
@@ -22,5 +22,5 @@ private:
 public:
     Camera();
 
-    void photo(vector<Triangle>& triangles);
+    void photo(vector<Triangle>& triangles, Octree& octree);
 };

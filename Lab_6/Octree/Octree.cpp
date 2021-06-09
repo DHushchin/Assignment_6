@@ -5,21 +5,16 @@ Octree::Octree() {}
 Octree::Octree(Box& box)
 {
     this->box = box;
-
     children.assign(8, NULL);
-}
-
-void Octree::setBox(Box box)
-{
-    this->box = box;
 }
 
 void Octree::insert(Triangle& triangle)
 {
-
-    double midX = (box.getTLF().getX() + box.getBRB().getX()) * 0.5,
-           midY = (box.getTLF().getY() + box.getBRB().getY()) * 0.5,
-           midZ = (box.getTLF().getZ() + box.getBRB().getZ()) * 0.5;
+    if (triangle.getInserted())
+        return;
+    double midX = (this->box.getTLF().getX() + this->box.getBRB().getX()) * 0.5,
+           midY = (this->box.getTLF().getY() + this->box.getBRB().getY()) * 0.5,
+           midZ = (this->box.getTLF().getZ() + this->box.getBRB().getZ()) * 0.5;
 
     Point* points = triangle.getPoints();
 
@@ -93,42 +88,52 @@ void Octree::insert(Triangle& triangle)
         }
     }
 
-    if (points[0].getPosition() == points[1].getPosition() && points[1].getPosition() == points[2].getPosition())
+    if (triangle.getPoints()[0].getPosition() == triangle.getPoints()[1].getPosition() && 
+        triangle.getPoints()[1].getPosition() == triangle.getPoints()[2].getPosition())
     {
         int index = (int)points[0].getPosition();
-        if (children[index] == NULL) {
+
+        if (children[index] == NULL)
+        {
+            delete children[index];
             Box newBox(box);
             newBox.resize(points[0].getPosition());
-            children[index] = new Octree(newBox);
+            children[index] = new Octree(newBox);           
         }
         children[index]->insert(triangle);
+        
     }
-    else
+    else if (!triangle.getInserted())
     {
         this->box.setTriangle(triangle);
-        triangle.setInserted();
+        triangle.setInserted(true);
     }
 }
 
-void Octree::findIntersectedTriangles(Line &line, vector<Triangle> &IntersectedTriangles)
+void Octree::findIntersectedTriangles(Line& line, Point& currentPoint, Point& resultPoint, double& minLength)
 {
-    if (children.size() > 0)
-    {
-        for (int i = 0; i < children.size(); i++)
-        {
-            if (children[i]->box.lineIntersect(line))
-            {
-                findIntersectedTriangles(line, IntersectedTriangles);
-            }
-            else
-            {
-                vector<Triangle> triangles = children[i]->box.getTriangles();
 
-                for (int i = 0; i < triangles.size(); i++)
+    for (size_t i = 0; i < children.size(); i++)
+    {
+        if (children[i] == NULL)
+            continue;
+
+        if (children[i]->box.lineIntersect(line))
+        {
+            children[i]->findIntersectedTriangles(line, currentPoint, resultPoint, minLength);
+        }
+        else
+        {
+            vector<Triangle> triangles = box.getTriangles();
+
+            for (size_t i = 0; i < triangles.size(); i++)
+            {
+                if (triangles[i].intersect(line).getX() != -9999)
                 {
-                    //if (triangles[i].lineIntersect(line))
+                    if (triangles[i].distEuclid(currentPoint, resultPoint) <= minLength)
                     {
-                    //    IntersectedTriangles.push_back(triangles[i]);
+                        resultPoint = triangles[i].intersect(line);
+                        minLength = triangles[i].distEuclid(currentPoint, resultPoint);
                     }
                 }
             }

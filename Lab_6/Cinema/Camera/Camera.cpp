@@ -6,13 +6,13 @@ Camera::Camera() : base(0, -50, 0)
 
     Point screenBase(this->base.getX(), this->base.getY() + distance, this->base.getZ());
     Plane screenImage(0, 1, 0, -this->base.getY() - distance);
-    this->screen = Screen(screenBase, screenImage, 1000, 1000);
+    this->screen = Screen(screenBase, screenImage, 100, 100);
 
     Point lightBase(this->base.getX(), this->base.getY(), this->base.getZ() + 2);
     this->light = Light(lightBase);
 }
 
-void Camera::photo(vector<Triangle> &triangles)
+void Camera::photo(vector<Triangle> &triangles, Octree& octree)
 {
     Point screenBase = this->screen.getBase();
     Point currentPoint;
@@ -30,24 +30,20 @@ void Camera::photo(vector<Triangle> &triangles)
         for (double j = screenBase.getX() - (double)screenSize * 0.5, pixelX = 0; j < (screenBase.getX() + screenSize * 0.5); j += screenSize / (double)screenWidth, pixelX++)
         {
             currentPoint = Point(j, screenBase.getY(), i);
-            Line cameraRay = Line(this->base, currentPoint);
+            Line cameraRay(this->base, currentPoint);
 
-            for (int k = 0; k < triangles.size(); k++)
-            {
-                Point triangleIntersect = triangles[k].intersect(cameraRay);
+            Point resultPoint(INT_MAX, INT_MAX, INT_MAX);
+            double length = INT_MAX;
+            octree.findIntersectedTriangles(cameraRay, currentPoint, resultPoint, length);
 
-                if (triangleIntersect.getX() != -9999)
-                {
-                    Line lightRay(triangleIntersect, this->light.getBase());
+            Line lightRay(resultPoint, this->light.getBase());
 
-                    double angle = angleBetween(cameraRay.getDirectionVector(), lightRay.getDirectionVector());
-                    double cosAbs = abs(cos(angle));
+            double angle = angleBetween(cameraRay.getDirectionVector(), lightRay.getDirectionVector());
+            double cosAbs = abs(cos(angle));
 
-                    Color pixelColor(cosAbs * 255, cosAbs * 255, cosAbs * 255);
+            Color pixelColor(cosAbs * 255, cosAbs * 255, cosAbs * 255);
 
-                    image.setPixel(pixelX, pixelY, pixelColor);
-                }
-            }
+            image.setPixel(pixelX, pixelY, pixelColor);
         }
     }
 

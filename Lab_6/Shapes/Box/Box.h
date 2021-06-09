@@ -22,9 +22,9 @@ public:
 
     void resize(Position position);
 
-    void setTLF(Point point);
+    void setTLF(Point& point);
 
-    void setBRB(Point point);
+    void setBRB(Point& point);
 
     Point getTLF();
 
@@ -33,8 +33,10 @@ public:
     void setTriangle(Triangle& triangle);
 
     vector<Triangle> getTriangles();
+
 	bool IfIntersect(Point & p1, Point & p2, Point & p3, Line & line, Point & intersect);
-	bool IntersectCurrentPlane(Line line, Point & intersect, int a, int b, int c, int d);
+
+	bool IntersectCurrentPlane(Line& line, Point & intersect, double a, double b, double c, double d);
 
     bool lineIntersect(Line &line);
 };

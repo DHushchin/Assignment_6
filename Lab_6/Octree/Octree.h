@@ -20,14 +20,12 @@ public:
 
     Octree(Box& box);
 
-    void setBox(Box box);
-
     void insert(Triangle& triangle);
 
-    void findIntersectedTriangles(Line &line, vector<Triangle> &intersected);
+    void findIntersectedTriangles(Line &line, Point& currentPoint, Point& resultPoint, double& minLength);
 
     void getTriangleNumber(int& sum) {
-        for (int i = 0; i < children.size(); i++)
+        for (size_t i = 0; i < children.size(); i++)
         {
             if (children.size() > 0)
             {

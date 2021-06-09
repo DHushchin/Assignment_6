@@ -3,5 +3,5 @@
 class Shape
 {
 public:
-    virtual void print() {}
+    virtual void print() {};
 };

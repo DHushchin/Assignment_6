@@ -1,15 +1,18 @@
 #include "Point.h"
 
-Point::Point() {}
+Point::Point() {
+    position = Position::UNDEFINED;
+}
 
 Point::Point(const Point &point)
 {
-    this->x = point.getX();
-    this->y = point.getY();
-    this->z = point.getZ();
+    this->x = point.x;
+    this->y = point.y;
+    this->z = point.z;
+    position = Position::UNDEFINED;
 }
 
-Point::Point(double x, double y, double z) : x(x), y(y), z(z)
+Point::Point(double x, double y, double z) : x(x), y(y), z(z), position(Position::UNDEFINED)
 {
 }
 

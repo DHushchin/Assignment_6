@@ -161,6 +161,7 @@
     <ClInclude Include="Parser\Parser.h" />
     <ClInclude Include="Photo\BMP.h" />
     <ClInclude Include="Shapes\Box\Box.h" />
+    <ClInclude Include="Shapes\Line\Line.h" />
     <ClInclude Include="Shapes\Plane\Plane.h" />
     <ClInclude Include="Shapes\Point\Point.h" />
     <ClInclude Include="Shapes\Position\Position.h" />
