@@ -1,12 +1,12 @@
 #include "Camera.h"
 
-Camera::Camera() : base(0, -50, 0)
+Camera::Camera() : base(0, -2, 0)
 {
-    int distance = 10;
+    int distance = 1;
 
     Point screenBase(this->base.getX(), this->base.getY() + distance, this->base.getZ());
     Plane screenImage(0, 1, 0, -this->base.getY() - distance);
-    this->screen = Screen(screenBase, screenImage, 100, 100);
+    this->screen = Screen(screenBase, screenImage, 300, 300);
 
     Point lightBase(this->base.getX(), this->base.getY(), this->base.getZ() + 2);
     this->light = Light(lightBase);
@@ -21,7 +21,7 @@ void Camera::photo(vector<Triangle> &triangles, Octree& octree)
     int screenHeight = screen.getHeight();
     int screenSize = screen.getSize();
 
-    int pixelX, pixelY = screenHeight - 1;
+    int pixelX = 0, pixelY = screenHeight - 1;
 
     Bmp image = this->screen.getImage();
 
@@ -34,16 +34,18 @@ void Camera::photo(vector<Triangle> &triangles, Octree& octree)
 
             Point resultPoint(INT_MAX, INT_MAX, INT_MAX);
             double length = INT_MAX;
-            octree.findIntersectedTriangles(cameraRay, currentPoint, resultPoint, length);
+            octree.findIntersectedPoint(cameraRay, currentPoint, resultPoint, length);
 
-            Line lightRay(resultPoint, this->light.getBase());
+            if (resultPoint.getX() != INT_MAX) {
+                Line lightRay(resultPoint, this->light.getBase());
 
-            double angle = angleBetween(cameraRay.getDirectionVector(), lightRay.getDirectionVector());
-            double cosAbs = abs(cos(angle));
+                double angle = angleBetween(cameraRay.getDirectionVector(), lightRay.getDirectionVector());
+                double cosAbs = abs(cos(angle));
 
-            Color pixelColor(cosAbs * 255, cosAbs * 255, cosAbs * 255);
+                Color pixelColor(cosAbs * 255, cosAbs * 255, cosAbs * 255);
 
-            image.setPixel(pixelX, pixelY, pixelColor);
+                image.setPixel(pixelX, pixelY, pixelColor);
+            }
         }
     }
 

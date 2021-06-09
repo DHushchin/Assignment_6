@@ -32,11 +32,7 @@ public:
 
     void setTriangle(Triangle& triangle);
 
-    vector<Triangle> getTriangles();
-
-	bool IfIntersect(Point & p1, Point & p2, Point & p3, Line & line, Point & intersect);
-
-	bool IntersectCurrentPlane(Line& line, Point & intersect, double a, double b, double c, double d);
+    vector<Triangle>& getTriangles();
 
     bool lineIntersect(Line &line);
 };

@@ -100,47 +100,15 @@ void Box::setTriangle(Triangle& triangle)
     this->triangles.push_back(triangle);
 }
 
-vector<Triangle> Box::getTriangles()
+vector<Triangle>& Box::getTriangles()
 {
     return this->triangles;
-}
-
-bool Box::IntersectCurrentPlane(Line& line, Point& intersect, double a, double b, double c, double d) {
-	double tmp, tmp2;
-	tmp = a * line.getDirectionVector().getX() + b * line.getDirectionVector().getY() + c * line.getDirectionVector().getZ();
-	if (abs(tmp) < 1e-3)
-		return false;
-	tmp2 = -(a*line.getFirstPoint().getX() + b * line.getFirstPoint().getY() + c * line.getFirstPoint().getZ() + d) / tmp;
-	intersect = Point(line.getFirstPoint().getX() + line.getDirectionVector().getX() * tmp2, line.getFirstPoint().getZ() + line.getDirectionVector().getZ() * tmp2, line.getFirstPoint().getZ() + line.getDirectionVector().getZ() * tmp2);
-	return true;
-}
-
-bool Box::IfIntersect(Point & p1, Point & p2, Point & p3, Line & line, Point & intersect) {
-
-	double a, b, c, d, mod;
-
-	a = p2.getY()*p3.getZ() - p1.getY()*p3.getZ() - p2.getY()* p1.getZ() - p3.getY() * p2.getZ() + p3.getY()*p1.getZ() + p1.getY()*p2.getZ();
-	b = p2.getZ()*p3.getX() - p1.getZ()*p3.getX() - p2.getZ()* p1.getX() - p3.getZ() * p2.getX() + p3.getZ()*p1.getX() + p1.getZ()*p2.getZ();
-	c = p2.getX()*p3.getY() - p1.getX()*p3.getY() - p2.getX()* p1.getY() - p3.getX() * p2.getY() + p3.getX()*p1.getY() + p1.getX()*p2.getY();
-
-	/*Normalize*/
-	mod = sqrt(pow(a, 2)*pow(b, 2)*pow(c, 2));
-	mod = 1 / mod;
-	a = a * mod;
-	b = b * mod;
-	c = c * mod;
-	/**/
-	d = -p1.getX()*a - p1.getY()*b - p1.getZ() * c;
-
-	if (IntersectCurrentPlane(line, intersect, a, b, c, d))
-		if (intersect.getX() >= p1.getX() && intersect.getX() <= p2.getX() && intersect.getY() >= p1.getY() && intersect.getY() <= p3.getY())
-			return true;
-	return false;
 }
 
 bool Box::lineIntersect(Line &line)
 {
 	Point p1, p2, p3, intersect;
+	Plane plane;
 
 	/*front*/
 	p1 = this->top_left_front;
@@ -148,8 +116,9 @@ bool Box::lineIntersect(Line &line)
 	p2.setZ(this->bottom_right_back.getZ());
 	p3 = this->top_left_front;
 	p3.setY(this->bottom_right_back.getY());
+	plane = Plane(p1, p2, p3);
 
-	if (IfIntersect(p1, p2, p3, line, intersect))
+	if (plane.intersect(line).getX() != INT_MAX)
 		return true;
 	/*front-right*/
 	p1 = this->bottom_right_back;
@@ -157,8 +126,9 @@ bool Box::lineIntersect(Line &line)
 	p2.setZ(this->top_left_front.getZ());
 	p3 = this->bottom_right_back;
 	p3.setX(this->top_left_front.getX());
+	plane = Plane(p1, p2, p3);
 
-	if (IfIntersect(p1, p2, p3, line, intersect))
+	if (plane.intersect(line).getX() != INT_MAX)
 		return true;
 	/*front-top*/
 	p1 = this->top_left_front;
@@ -166,8 +136,9 @@ bool Box::lineIntersect(Line &line)
 	p2.setX(this->bottom_right_back.getX());
 	p3 = this->top_left_front;
 	p3.setY(this->bottom_right_back.getY());
+	plane = Plane(p1, p2, p3);
 
-	if (IfIntersect(p1, p2, p3, line, intersect))
+	if (plane.intersect(line).getX() != INT_MAX)
 		return true;
 	/*back*/
 	p1 = this->bottom_right_back;
@@ -175,16 +146,18 @@ bool Box::lineIntersect(Line &line)
 	p2.setY(this->top_left_front.getY());
 	p3 = this->bottom_right_back;
 	p3.setZ(this->top_left_front.getZ());
+	plane = Plane(p1, p2, p3);
 
-	if (IfIntersect(p1, p2, p3, line, intersect))
+	if (plane.intersect(line).getX() != INT_MAX)
 		return true;
 	/*bottom*/
 	p1 = this->top_left_front;
 	p2 = this->top_left_front;
 	p2.setX(this->bottom_right_back.getX());
 	p3 = this->bottom_right_back;
+	plane = Plane(p1, p2, p3);
 
-	if (IfIntersect(p1, p2, p3, line, intersect))
+	if (plane.intersect(line).getX() != INT_MAX)
 		return true;
 	/*back-left*/
 	p1 = this->top_left_front;
@@ -192,8 +165,9 @@ bool Box::lineIntersect(Line &line)
 	p2.setZ(this->bottom_right_back.getZ());
 	p3 = this->top_left_front;
 	p3.setY(this->bottom_right_back.getY());
+	plane = Plane(p1, p2, p3);
 
-	if (IfIntersect(p1, p2, p3, line, intersect))
+	if (plane.intersect(line).getX() != INT_MAX)
 		return true;
 
     return false;

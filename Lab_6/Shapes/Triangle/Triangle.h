@@ -17,13 +17,13 @@ class Triangle : public Shape
 private:
     Point vertexes[3];
     bool isInserted;
-    void getNewVertex(Point *newVertex, Point *intersectPoint);
-    double s(Point A, Point B, Point C);
+    //void getNewVertex(Point *newVertex, Point *intersectPoint);
+    double s(Point& A, Point& B, Point& C);
 
 public:
     Triangle() { isInserted = false; }
 
-    bool contains(Point point);
+    bool contains(Point& point);
 
     Triangle(Point a, Point b, Point c);
 
@@ -47,9 +47,9 @@ public:
 
     double getMinZ();
 
-    Point intersect(Line line);
+    Point intersect(Line& line);
 
-    double distEuclid(Point A, Point B);
+    double distEuclid(Point& A, Point& B);
 
     friend bool operator==(const Triangle& a, const Triangle& b) {
         for (int i = 0; i < 3; i++)

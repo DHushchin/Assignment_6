@@ -138,12 +138,12 @@ double Triangle::getMinZ()
     return minZ;
 }
 
-double Triangle::distEuclid(Point A, Point B)
+double Triangle::distEuclid(Point& A, Point& B)
 {
     return sqrt((A.getX() - B.getX()) * (A.getX() - B.getX()) + (A.getY() - B.getY()) * (A.getY() - B.getY()) + (A.getZ() - B.getZ()) * (A.getZ() - B.getZ()));
 }
 
-double Triangle::s(Point A, Point B, Point C)
+double Triangle::s(Point& A, Point& B, Point& C)
 {
     double a = distEuclid(A, B);
     double b = distEuclid(B, C);
@@ -152,27 +152,12 @@ double Triangle::s(Point A, Point B, Point C)
     return sqrt(fabs(p * (p - a) * (p - b) * (p - c)));
 }
 
-bool Triangle::contains(Point point)
+bool Triangle::contains(Point& point)
 {
-    // Point a = this->vertexes[0];
-    // Point b = this->vertexes[1];
-    // Point c = this->vertexes[2];
-
-    // double t1 = (a.getX() - point.getX()) * (b.getY() - a.getY()) - (b.getX() - a.getX()) * (a.getY() - point.getY()),
-    //        t2 = (b.getX() - point.getX()) * (c.getY() - b.getY()) - (c.getX() - b.getX()) * (b.getY() - point.getY()),
-    //        t3 = (c.getX() - point.getX()) * (a.getY() - c.getY()) - (a.getX() - c.getX()) * (c.getY() - point.getY());
-
-    // if (t1 >= 0 && t2 >= 0 && t3 >= 0)
-    //     return true;
-
-    // if (t1 < 0 && t2 < 0 && t3 < 0)
-    //     return true;
-
-    // return false;
     return s(point, this->vertexes[0], this->vertexes[1]) + s(point, this->vertexes[0], this->vertexes[2]) + s(this->vertexes[1], this->vertexes[2], point) - 1e-5 < s(this->vertexes[0], this->vertexes[1], this->vertexes[2]);
 }
 
-Point Triangle::intersect(Line line)
+Point Triangle::intersect(Line& line)
 {
     Plane trianglePlane(this->vertexes[0], this->vertexes[1], this->vertexes[2]);
     Point intersectPoint = trianglePlane.intersect(line);
@@ -182,5 +167,5 @@ Point Triangle::intersect(Line line)
         return intersectPoint;
     }
 
-    return Point(-9999, -9999, -9999);
+    return Point(INT_MAX, INT_MAX, INT_MAX);
 }

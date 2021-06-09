@@ -5,7 +5,6 @@
 
 #include "../Shape/Shape.h"
 #include "../Point/Point.h"
-//#include "../Line/Line.h"
 
 const double M_PI = 3.141592653589793238463;
 

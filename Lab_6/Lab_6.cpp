@@ -11,8 +11,9 @@ using namespace std;
 
 int main()
 {
+    
     Parser parser;
-    parser.parse("objects\\sphere.obj");
+    parser.parse("objects\\cow.obj");
 
     Camera camera;
     vector <Triangle> triangles = parser.getTriangles();
@@ -23,12 +24,23 @@ int main()
         octree.insert(triangles[i]);
     }
 
-    int sum = 0;
-    octree.getTriangleNumber(sum);
-    cout << sum << endl;
-
-
     camera.photo(triangles, octree);
-
+    
+    /*
+    Box box(Point(-2, -2, -2), Point(2, 2, 2));
+    Octree octree(box);
+    Triangle triangle(Point(1, 0, 0), Point(0, 1, 0), Point(0, 0, 1));
+    octree.insert(triangle);
+    Line line(Point(-5, -5, -5), Point(5, 5, 5));
+    int sum = 0;
+    //octree.getTriangleNumber(sum);
+    //cout << sum << endl;
+    Point result(INT_MAX, INT_MAX, INT_MAX);
+    double length = INT_MAX;
+    Point start(0, 0, 0);
+    octree.findIntersectedTriangles(line, start, result, length);
+    result.print();
+    */
+    
     return 0;
 }

@@ -22,7 +22,7 @@ public:
 
     void insert(Triangle& triangle);
 
-    void findIntersectedTriangles(Line &line, Point& currentPoint, Point& resultPoint, double& minLength);
+    void findIntersectedPoint(Line &line, Point& currentPoint, Point& resultPoint, double& minLength);
 
     void getTriangleNumber(int& sum) {
         for (size_t i = 0; i < children.size(); i++)
