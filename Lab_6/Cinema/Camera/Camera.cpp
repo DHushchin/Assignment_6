@@ -2,12 +2,11 @@
 
 Camera::Camera() : base(0, -10, 0)
 {
-
     Point screenBase(this->base.getX(), this->base.getY() + 9, this->base.getZ());
     Plane screenImage(0, 1, 0, -this->base.getY() - 9);
-    this->screen = Screen(screenBase, screenImage, 500, 500);
+    this->screen = Screen(screenBase, screenImage, 1000, 1000);
 
-    Point lightBase(this->base.getX(), this->base.getY() + 9, this->base.getZ() + 0.4);
+    Point lightBase(this->base.getX(), this->base.getY() + 9, this->base.getZ() + 0.5);
     this->light = Light(lightBase);
 }
 
@@ -42,8 +41,12 @@ void Camera::photo(Octree &octree)
             {
                 Line lightRay(resultPoint, this->light.getBase());
 
-                double cosAbs = abs(cos(angleBetween(cameraRay.getDirectionVector(), lightRay.getDirectionVector())));
-                Color pixelColor(cosAbs * 255, cosAbs * 255, cosAbs * 255);
+                Vector lengthVector(resultPoint, this->light.getBase());
+
+                double cosAbs = round(abs(cos(angleBetween(cameraRay.getDirectionVector(), lightRay.getDirectionVector()))) * 100) / 100;
+                double shadowPlus = 1 / lengthVector.getLength();
+
+                Color pixelColor(255, cosAbs * 255 + shadowPlus * 255, cosAbs * 255 + shadowPlus * 255);
 
                 image.setPixel(pixelX, pixelY, pixelColor);
             }
