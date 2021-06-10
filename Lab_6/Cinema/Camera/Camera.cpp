@@ -1,18 +1,17 @@
 #include "Camera.h"
 
-Camera::Camera() : base(0, -50, 0)
+Camera::Camera() : base(0, -10, 0)
 {
-    int distance = 10;
 
-    Point screenBase(this->base.getX(), this->base.getY() + distance, this->base.getZ());
-    Plane screenImage(0, 1, 0, -this->base.getY() - distance);
-    this->screen = Screen(screenBase, screenImage, 1000, 1000);
+    Point screenBase(this->base.getX(), this->base.getY() + 9, this->base.getZ());
+    Plane screenImage(0, 1, 0, -this->base.getY() - 9);
+    this->screen = Screen(screenBase, screenImage, 500, 500);
 
-    Point lightBase(this->base.getX(), this->base.getY() + distance * 5, this->base.getZ() + distance / 2);
+    Point lightBase(this->base.getX(), this->base.getY() + 9, this->base.getZ() + 0.4);
     this->light = Light(lightBase);
 }
 
-void Camera::photo(Octree& octree)
+void Camera::photo(Octree &octree)
 {
     Point screenBase = this->screen.getBase();
 
@@ -39,12 +38,12 @@ void Camera::photo(Octree& octree)
 
             octree.findIntersectedPoint(cameraRay, currentPoint, resultPoint, length);
 
-            if (resultPoint.getX() != 100) {
+            if (resultPoint.getX() != 100)
+            {
                 Line lightRay(resultPoint, this->light.getBase());
 
                 double cosAbs = abs(cos(angleBetween(cameraRay.getDirectionVector(), lightRay.getDirectionVector())));
-
-                Color pixelColor(cosAbs * 125, cosAbs * 240, cosAbs * 250);
+                Color pixelColor(cosAbs * 255, cosAbs * 255, cosAbs * 255);
 
                 image.setPixel(pixelX, pixelY, pixelColor);
             }
@@ -53,14 +52,4 @@ void Camera::photo(Octree& octree)
 
     string fileName = "a.bmp";
     image.write(fileName, fileName);
-}
-
-double Camera::scalarProduct(Vector a, Vector b)
-{
-    return (a.getX() * b.getX() + a.getY() * b.getY() + a.getZ() * b.getZ());
-}
-
-double Camera::angleBetween(Vector a, Vector b)
-{
-    return acos((scalarProduct(a, b) / (a.getLength() * b.getLength())));
 }

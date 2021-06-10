@@ -77,6 +77,7 @@ Triangle Parser::parseTriangle(string line)
 void Parser::parse(string fileName)
 {
     ifstream file(fileName);
+
     string currentLine;
 
     while (getline(file, currentLine))
@@ -172,6 +173,7 @@ Point Parser::findMaxPoint()
     return max;
 }
 
-vector<Triangle>& Parser::getTriangles() {
+vector<Triangle> &Parser::getTriangles()
+{
     return triangles;
 }

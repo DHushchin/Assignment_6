@@ -14,15 +14,14 @@ class Octree
 {
 private:
     Box box;
-    Octree** children;
+    Octree **children;
 
 public:
     Octree();
 
-    Octree(Box& box);
+    Octree(Box &box);
 
-    void insert(Triangle& triangle);
+    void insert(Triangle &triangle);
 
-    void findIntersectedPoint(Line &line, Point& currentPoint, Point& resultPoint, double& minLength);
-
+    void findIntersectedPoint(Line &line, Point &currentPoint, Point &resultPoint, double &minLength);
 };

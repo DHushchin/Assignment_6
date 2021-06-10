@@ -11,7 +11,7 @@ Box::Box(Point startPoint, Point endPoint, int size)
     capacity = 0;
 }
 
-Box::Box(const Box& box)
+Box::Box(const Box &box)
 {
     this->bottom_right_back = box.bottom_right_back;
     this->top_left_front = box.top_left_front;
@@ -26,8 +26,8 @@ Box::Box(const Box& box)
 void Box::resize(Position pos)
 {
     double midX = (top_left_front.getX() + bottom_right_back.getX()) * 0.5,
-        midY = (top_left_front.getY() + bottom_right_back.getY()) * 0.5,
-        midZ = (top_left_front.getZ() + bottom_right_back.getZ()) * 0.5;
+           midY = (top_left_front.getY() + bottom_right_back.getY()) * 0.5,
+           midZ = (top_left_front.getZ() + bottom_right_back.getZ()) * 0.5;
 
     switch (pos)
     {
@@ -80,12 +80,12 @@ void Box::resize(Position pos)
     }
 }
 
-void Box::setTLF(Point& point)
+void Box::setTLF(Point &point)
 {
     this->top_left_front = point;
 }
 
-void Box::setBRB(Point& point)
+void Box::setBRB(Point &point)
 {
     this->bottom_right_back = point;
 }
@@ -105,17 +105,37 @@ int Box::getCapacity()
     return capacity;
 }
 
-void Box::setTriangle(Triangle& triangle)
+void Box::setTriangle(Triangle &triangle)
 {
     triangles[capacity++] = triangle;
 }
 
-Triangle* Box::getTriangles()
+Triangle *Box::getTriangles()
 {
     return triangles;
 }
 
-bool Box::lineIntersect(Line& line)
+bool Box::containsPoint(Point point)
+{
+    if (point.getX() < this->top_left_front.getX() || point.getX() > this->bottom_right_back.getX())
+    {
+        return false;
+    }
+
+    if (point.getY() > this->bottom_right_back.getY() || point.getY() < this->top_left_front.getY())
+    {
+        return false;
+    }
+
+    if (point.getZ() > this->bottom_right_back.getZ() || point.getZ() < this->top_left_front.getZ())
+    {
+        return false;
+    }
+
+    return true;
+}
+
+bool Box::lineIntersect(Line &line)
 {
     Point p1, p2, p3, intersect;
     Plane plane;
@@ -127,8 +147,9 @@ bool Box::lineIntersect(Line& line)
     p3 = this->top_left_front;
     p3.setY(this->bottom_right_back.getY());
     plane = Plane(p1, p2, p3);
+    intersect = plane.intersect(line);
 
-    if (plane.intersect(line).getX() != INT_MAX)
+    if (this->containsPoint(intersect))
         return true;
 
     /*front-right*/
@@ -138,8 +159,9 @@ bool Box::lineIntersect(Line& line)
     p3 = this->bottom_right_back;
     p3.setX(this->top_left_front.getX());
     plane = Plane(p1, p2, p3);
+    intersect = plane.intersect(line);
 
-    if (plane.intersect(line).getX() != INT_MAX)
+    if (this->containsPoint(intersect))
         return true;
 
     /*front-top*/
@@ -149,8 +171,9 @@ bool Box::lineIntersect(Line& line)
     p3 = this->top_left_front;
     p3.setY(this->bottom_right_back.getY());
     plane = Plane(p1, p2, p3);
+    intersect = plane.intersect(line);
 
-    if (plane.intersect(line).getX() != INT_MAX)
+    if (this->containsPoint(intersect))
         return true;
 
     /*back*/
@@ -160,8 +183,9 @@ bool Box::lineIntersect(Line& line)
     p3 = this->bottom_right_back;
     p3.setZ(this->top_left_front.getZ());
     plane = Plane(p1, p2, p3);
+    intersect = plane.intersect(line);
 
-    if (plane.intersect(line).getX() != INT_MAX)
+    if (this->containsPoint(intersect))
         return true;
 
     /*bottom*/
@@ -170,8 +194,9 @@ bool Box::lineIntersect(Line& line)
     p2.setX(this->bottom_right_back.getX());
     p3 = this->bottom_right_back;
     plane = Plane(p1, p2, p3);
+    intersect = plane.intersect(line);
 
-    if (plane.intersect(line).getX() != INT_MAX)
+    if (this->containsPoint(intersect))
         return true;
 
     /*back-left*/
@@ -181,8 +206,9 @@ bool Box::lineIntersect(Line& line)
     p3 = this->top_left_front;
     p3.setY(this->bottom_right_back.getY());
     plane = Plane(p1, p2, p3);
+    intersect = plane.intersect(line);
 
-    if (plane.intersect(line).getX() != INT_MAX)
+    if (this->containsPoint(intersect))
         return true;
 
     return false;
