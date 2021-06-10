@@ -10,15 +10,14 @@ using namespace std;
 #include "Shapes/Triangle/Triangle.h"
 
 int main()
-{  
+{
     Parser parser;
-    parser.parse("objects\\sphere.obj");
+    parser.parse("sphere.obj");
 
-
-    vector <Triangle> triangles = parser.getTriangles();
+    vector<Triangle> triangles = parser.getTriangles();
     Box box(parser.findMinPoint(), parser.findMaxPoint());
     Octree octree(box);
-    
+
     for (auto it = triangles.begin(); it != triangles.end(); ++it)
     {
         octree.insert(*it);

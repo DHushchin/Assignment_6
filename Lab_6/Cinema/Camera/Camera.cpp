@@ -12,7 +12,7 @@ Camera::Camera() : base(0, -50, 0)
     this->light = Light(lightBase);
 }
 
-void Camera::photo(vector<Triangle> &triangles, Octree& octree)
+void Camera::photo(vector<Triangle> &triangles, Octree &octree)
 {
     Point screenBase = this->screen.getBase();
 
@@ -35,12 +35,13 @@ void Camera::photo(vector<Triangle> &triangles, Octree& octree)
             double length = INT_MAX;
             octree.findIntersectedPoint(cameraRay, currentPoint, resultPoint, length);
 
-            if (resultPoint.getX() != INT_MAX) {
+            if (resultPoint.getX() != INT_MAX)
+            {
                 Line lightRay(resultPoint, this->light.getBase());
 
-                double cosAbs = abs(cos(angleBetween(cameraRay.getDirectionVector(), lightRay.getDirectionVector())));
+                double cosAbs = 1 - abs(cos(angleBetween(cameraRay.getDirectionVector(), lightRay.getDirectionVector())));
 
-                Color pixelColor((unsigned char)cosAbs * 255, (unsigned char)cosAbs * 255, (unsigned char)cosAbs * 255);
+                Color pixelColor(cosAbs * 255, cosAbs * 255, cosAbs * 255);
 
                 image.setPixel(pixelX, pixelY, pixelColor);
             }
