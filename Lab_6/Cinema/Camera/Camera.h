@@ -18,9 +18,10 @@ private:
     Screen screen;
     Light light;
     Point base;
-
+    double scalarProduct(Vector a, Vector b);
+    double angleBetween(Vector a, Vector b);
 public:
     Camera();
 
-    void photo(vector<Triangle>& triangles, Octree& octree);
+    void photo(Octree& octree);
 };

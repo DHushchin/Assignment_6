@@ -34,13 +34,3 @@ void Vector::print()
 {
     printf("Vector: (% 2.6f, % 2.6f, % 2.6f), %2.6f\n", this->x, this->y, this->z, this->length);
 }
-
-double scalarProduct(Vector a, Vector b)
-{
-    return (a.getX() * b.getX() + a.getY() * b.getY() + a.getZ() * b.getZ());
-}
-
-double angleBetween(Vector a, Vector b)
-{
-    return acos((scalarProduct(a, b) / (a.getLength() * b.getLength()))) * 180.0 / M_PI;
-}

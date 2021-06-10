@@ -114,29 +114,28 @@ void Octree::insert(Triangle& triangle)
 
 void Octree::findIntersectedPoint(Line& line, Point& currentPoint, Point& resultPoint, double& minLength)
 {
-    if (this->box.lineIntersect(line))
+    if (!this->box.lineIntersect(line))
+        return;
+
+    Triangle* triangles = this->box.getTriangles();
+    for (size_t i = 0; i < this->box.getCapacity(); i++)
     {
+        Point intersectPoint = triangles[i].intersect(line);
 
-        vector<Triangle>& triangles = this->box.getTriangles();
-        for (auto it = triangles.begin(); it != triangles.end(); ++it)
+        if (intersectPoint.getX() != INT_MAX)
         {
-            Point intersectPoint = (*it).intersect(line);
-
-            if (intersectPoint.getX() != INT_MAX)
+            float Euclid = triangles[i].distEuclid(currentPoint, intersectPoint);
+            if (Euclid < minLength)
             {
-                float Euclid = (*it).distEuclid(currentPoint, intersectPoint);
-                if (Euclid < minLength)
-                {
-                    resultPoint = intersectPoint;
-                    minLength = Euclid;
-                }
+                resultPoint = intersectPoint;
+                minLength = Euclid;
             }
         }
+    }
 
-        for (size_t i = 0; i < 8; i++)
-        {
-            if (children[i] != NULL)
-                children[i]->findIntersectedPoint(line, currentPoint, resultPoint, minLength);
-        }
+    for (size_t i = 0; i < 8; i++)
+    {
+        if (children[i])
+            children[i]->findIntersectedPoint(line, currentPoint, resultPoint, minLength);
     }
 }

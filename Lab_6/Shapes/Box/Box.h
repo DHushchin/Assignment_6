@@ -11,14 +11,16 @@ class Box
 {
 private:
     Point top_left_front, bottom_right_back;
-    vector<Triangle> triangles;
+    Triangle* triangles;
+    unsigned int size;
+    unsigned int capacity;
 
 public:
     Box();
 
-    Box(Point startPoint, Point endPoint);
+    Box(Point startPoint, Point endPoint, int size);
 
-    Box(const Box &box);
+    Box(const Box& box);
 
     void resize(Position position);
 
@@ -30,9 +32,11 @@ public:
 
     Point getBRB();
 
+    int getCapacity();
+
     void setTriangle(Triangle& triangle);
 
-    vector<Triangle>& getTriangles();
+    Triangle* getTriangles();
 
-    bool lineIntersect(Line &line);
+    bool lineIntersect(Line& line);
 };

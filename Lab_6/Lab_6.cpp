@@ -12,13 +12,14 @@ using namespace std;
 int main()
 {
     Parser parser;
-    parser.parse("sphere.obj");
+    parser.parse("objects\\sphere.obj");
 
-    vector<Triangle> triangles = parser.getTriangles();
-    Box box(parser.findMinPoint(), parser.findMaxPoint());
+
+    vector <Triangle> parsedTriangles = parser.getTriangles();
+    Box box(parser.findMinPoint(), parser.findMaxPoint(), parsedTriangles.size());
     Octree octree(box);
 
-    for (auto it = triangles.begin(); it != triangles.end(); ++it)
+    for (auto it = parsedTriangles.begin(); it != parsedTriangles.end(); ++it)
     {
         octree.insert(*it);
     }
@@ -29,6 +30,6 @@ int main()
     */
 
     Camera camera;
-    camera.photo(triangles, octree);
+    camera.photo(octree);
     return 0;
 }

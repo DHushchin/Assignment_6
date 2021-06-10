@@ -2,24 +2,32 @@
 
 Box::Box() {}
 
-Box::Box(Point startPoint, Point endPoint)
+Box::Box(Point startPoint, Point endPoint, int size)
 {
     this->top_left_front = startPoint;
     this->bottom_right_back = endPoint;
+    this->size = size;
+    triangles = new Triangle[size];
+    capacity = 0;
 }
 
 Box::Box(const Box& box)
 {
     this->bottom_right_back = box.bottom_right_back;
     this->top_left_front = box.top_left_front;
+    this->size = box.size;
+    this->triangles = new Triangle[size];
+    this->capacity = 0;
+    //for (int i = 0; i < size; i++)
+    //    this->triangles[i] = box.triangles[i];
     //this->triangles = box.triangles;
 }
 
 void Box::resize(Position pos)
 {
     double midX = (top_left_front.getX() + bottom_right_back.getX()) * 0.5,
-           midY = (top_left_front.getY() + bottom_right_back.getY()) * 0.5,
-           midZ = (top_left_front.getZ() + bottom_right_back.getZ()) * 0.5;
+        midY = (top_left_front.getY() + bottom_right_back.getY()) * 0.5,
+        midZ = (top_left_front.getZ() + bottom_right_back.getZ()) * 0.5;
 
     switch (pos)
     {
@@ -92,85 +100,90 @@ Point Box::getBRB()
     return this->bottom_right_back;
 }
 
+int Box::getCapacity()
+{
+    return capacity;
+}
+
 void Box::setTriangle(Triangle& triangle)
 {
-    this->triangles.push_back(triangle);
+    triangles[capacity++] = triangle;
 }
 
-vector<Triangle>& Box::getTriangles()
+Triangle* Box::getTriangles()
 {
-    return this->triangles;
+    return triangles;
 }
 
-bool Box::lineIntersect(Line &line)
+bool Box::lineIntersect(Line& line)
 {
-	Point p1, p2, p3, intersect;
-	Plane plane;
+    Point p1, p2, p3, intersect;
+    Plane plane;
 
-	/*front*/
-	p1 = this->top_left_front;
-	p2 = this->top_left_front;
-	p2.setZ(this->bottom_right_back.getZ());
-	p3 = this->top_left_front;
-	p3.setY(this->bottom_right_back.getY());
-	plane = Plane(p1, p2, p3);
+    /*front*/
+    p1 = this->top_left_front;
+    p2 = this->top_left_front;
+    p2.setZ(this->bottom_right_back.getZ());
+    p3 = this->top_left_front;
+    p3.setY(this->bottom_right_back.getY());
+    plane = Plane(p1, p2, p3);
 
-	if (plane.intersect(line).getX() != INT_MAX)
-		return true;
+    if (plane.intersect(line).getX() != INT_MAX)
+        return true;
 
-	/*front-right*/
-	p1 = this->bottom_right_back;
-	p2 = this->bottom_right_back;
-	p2.setZ(this->top_left_front.getZ());
-	p3 = this->bottom_right_back;
-	p3.setX(this->top_left_front.getX());
-	plane = Plane(p1, p2, p3);
+    /*front-right*/
+    p1 = this->bottom_right_back;
+    p2 = this->bottom_right_back;
+    p2.setZ(this->top_left_front.getZ());
+    p3 = this->bottom_right_back;
+    p3.setX(this->top_left_front.getX());
+    plane = Plane(p1, p2, p3);
 
-	if (plane.intersect(line).getX() != INT_MAX)
-		return true;
+    if (plane.intersect(line).getX() != INT_MAX)
+        return true;
 
-	/*front-top*/
-	p1 = this->top_left_front;
-	p2 = this->top_left_front;
-	p2.setX(this->bottom_right_back.getX());
-	p3 = this->top_left_front;
-	p3.setY(this->bottom_right_back.getY());
-	plane = Plane(p1, p2, p3);
+    /*front-top*/
+    p1 = this->top_left_front;
+    p2 = this->top_left_front;
+    p2.setX(this->bottom_right_back.getX());
+    p3 = this->top_left_front;
+    p3.setY(this->bottom_right_back.getY());
+    plane = Plane(p1, p2, p3);
 
-	if (plane.intersect(line).getX() != INT_MAX)
-		return true;
+    if (plane.intersect(line).getX() != INT_MAX)
+        return true;
 
-	/*back*/
-	p1 = this->bottom_right_back;
-	p2 = this->bottom_right_back;
-	p2.setY(this->top_left_front.getY());
-	p3 = this->bottom_right_back;
-	p3.setZ(this->top_left_front.getZ());
-	plane = Plane(p1, p2, p3);
+    /*back*/
+    p1 = this->bottom_right_back;
+    p2 = this->bottom_right_back;
+    p2.setY(this->top_left_front.getY());
+    p3 = this->bottom_right_back;
+    p3.setZ(this->top_left_front.getZ());
+    plane = Plane(p1, p2, p3);
 
-	if (plane.intersect(line).getX() != INT_MAX)
-		return true;
+    if (plane.intersect(line).getX() != INT_MAX)
+        return true;
 
-	/*bottom*/
-	p1 = this->top_left_front;
-	p2 = this->top_left_front;
-	p2.setX(this->bottom_right_back.getX());
-	p3 = this->bottom_right_back;
-	plane = Plane(p1, p2, p3);
+    /*bottom*/
+    p1 = this->top_left_front;
+    p2 = this->top_left_front;
+    p2.setX(this->bottom_right_back.getX());
+    p3 = this->bottom_right_back;
+    plane = Plane(p1, p2, p3);
 
-	if (plane.intersect(line).getX() != INT_MAX)
-		return true;
+    if (plane.intersect(line).getX() != INT_MAX)
+        return true;
 
-	/*back-left*/
-	p1 = this->top_left_front;
-	p2 = this->top_left_front;
-	p2.setZ(this->bottom_right_back.getZ());
-	p3 = this->top_left_front;
-	p3.setY(this->bottom_right_back.getY());
-	plane = Plane(p1, p2, p3);
+    /*back-left*/
+    p1 = this->top_left_front;
+    p2 = this->top_left_front;
+    p2.setZ(this->bottom_right_back.getZ());
+    p3 = this->top_left_front;
+    p3.setY(this->bottom_right_back.getY());
+    plane = Plane(p1, p2, p3);
 
-	if (plane.intersect(line).getX() != INT_MAX)
-		return true;
+    if (plane.intersect(line).getX() != INT_MAX)
+        return true;
 
     return false;
 }
