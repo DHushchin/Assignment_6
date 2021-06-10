@@ -12,7 +12,10 @@ using namespace std;
 int main()
 {
     Parser parser;
-    parser.parse("cow.obj");
+    string name;
+    cout << "Enter filename: ";
+    cin >> name;
+    parser.parse(name);
 
     vector<Triangle> parsedTriangles = parser.getTriangles();
     Box box(parser.findMinPoint(), parser.findMaxPoint(), parsedTriangles.size());

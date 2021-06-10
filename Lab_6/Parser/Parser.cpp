@@ -78,6 +78,15 @@ void Parser::parse(string fileName)
 {
     ifstream file(fileName);
 
+    if (!file)
+    {
+        cout << "File can't be opened" << endl;
+    }
+    else
+    {
+        cout << "Filename accepted" << endl;
+    }
+
     string currentLine;
 
     while (getline(file, currentLine))

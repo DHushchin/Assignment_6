@@ -4,7 +4,7 @@ Camera::Camera() : base(0, -10, 0)
 {
     Point screenBase(this->base.getX(), this->base.getY() + 9, this->base.getZ());
     Plane screenImage(0, 1, 0, -this->base.getY() - 9);
-    this->screen = Screen(screenBase, screenImage, 1000, 1000);
+    this->screen = Screen(screenBase, screenImage, 200, 200);
 
     Point lightBase(this->base.getX(), this->base.getY() + 9, this->base.getZ() + 0.5);
     this->light = Light(lightBase);
