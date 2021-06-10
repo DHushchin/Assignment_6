@@ -8,7 +8,7 @@ Camera::Camera() : base(0, -50, 0)
     Plane screenImage(0, 1, 0, -this->base.getY() - distance);
     this->screen = Screen(screenBase, screenImage, 100, 100);
 
-    Point lightBase(this->base.getX(), this->base.getY(), this->base.getZ() + 2);
+    Point lightBase(this->base.getX(), this->base.getY() + distance * 5, this->base.getZ() + distance / 2);
     this->light = Light(lightBase);
 }
 
@@ -39,8 +39,7 @@ void Camera::photo(vector<Triangle> &triangles, Octree &octree)
             {
                 Line lightRay(resultPoint, this->light.getBase());
 
-                double cosAbs = 1 - abs(cos(angleBetween(cameraRay.getDirectionVector(), lightRay.getDirectionVector())));
-
+                double cosAbs = abs(cos(angleBetween(cameraRay.getDirectionVector(), lightRay.getDirectionVector())));
                 Color pixelColor(cosAbs * 255, cosAbs * 255, cosAbs * 255);
 
                 image.setPixel(pixelX, pixelY, pixelColor);

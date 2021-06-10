@@ -42,5 +42,5 @@ double scalarProduct(Vector a, Vector b)
 
 double angleBetween(Vector a, Vector b)
 {
-    return acos((scalarProduct(a, b) / (a.getLength() * b.getLength()))) * 180.0 / M_PI;
+    return acos((scalarProduct(a, b) / (a.getLength() * b.getLength())));
 }
